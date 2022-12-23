@@ -1,0 +1,13 @@
+@import url(../../node_modules/chota/src/chota.css);
+@import url(../fontello/css/lit.css);
+
+:root {
+    --color-primary: #5783db;
+    --color-grey: #3e9a80;
+    --color-darkGrey: #80669d;
+    --color-success: #33b249;
+}
+
+.btn-cursor {
+    cursor: pointer;
+}
