@@ -12,3 +12,8 @@
 .btn-cursor {
     cursor: pointer;
 }
+
+// this should hide content in web component slots until the component is registered with the browser
+:not(:defined) {
+    display: none;
+}
