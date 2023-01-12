@@ -39,13 +39,15 @@ export class LitColumnHeader extends LitElement {
         if (!this.sortOrder) {
             return;
         }
-        return html`<i class="lit ${this.sortOrder === SortOrder.asc ? 'lit-up' : 'lit-down' } btn-cursor"></i>`;
+
+        return html`<i class="lcc ${this.sortOrder === SortOrder.asc ? 'lcc-up' : 'lcc-down' } btn-cursor"></i>`;
     }
 
     render() {
         if (this.noSort) {
             return html`<slot></slot>`;
         }
+
         return html`
             <span @click="${this.toggleSort}" class="btn-cursor">
                 <slot></slot>
