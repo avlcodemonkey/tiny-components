@@ -1,21 +1,23 @@
 @font-face {
-  font-family: 'lit';
-  src: url('../font/lit.woff2?16297438');
+  font-family: 'lcc';
+  src: url('../font/lcc.woff2?72828672');
+  src: url('../font/lcc.woff2?72828672') format('woff2');
   font-weight: normal;
   font-style: normal;
+  font-display: block;
 }
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
-    font-family: 'lit';
-    src: url('../font/lit.svg?16297438#lit') format('svg');
+    font-family: 'lcc';
+    src: url('../font/lcc.svg?72828672#lcc') format('svg');
   }
 }
 */
-[class^="lit-"]:before, [class*=" lit-"]:before {
-  font-family: "lit";
+[class^="lcc-"]:before, [class*=" lcc-"]:before {
+  font-family: "lcc";
   font-style: normal;
   font-weight: normal;
   speak: never;
@@ -49,15 +51,15 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.lit-dismiss:before { content: '\e800'; } /* '' */
-.lit-up:before { content: '\e801'; } /* '' */
-.lit-down:before { content: '\e802'; } /* '' */
-.lit-pencil:before { content: '\e803'; } /* '' */
-.lit-plus:before { content: '\e804'; } /* '' */
-.lit-down-open:before { content: '\f004'; } /* '' */
-.lit-to-end:before { content: '\f010'; } /* '' */
-.lit-to-start:before { content: '\f011'; } /* '' */
-.lit-fast-forward:before { content: '\f012'; } /* '' */
-.lit-fast-backward:before { content: '\f013'; } /* '' */
-.lit-search:before { content: '\f50d'; } /* '' */
-.lit-spinner:before { content: '\f528'; } /* '' */
+.lcc-dismiss:before { content: '\e800'; } /* '' */
+.lcc-up:before { content: '\e801'; } /* '' */
+.lcc-down:before { content: '\e802'; } /* '' */
+.lcc-pencil:before { content: '\e803'; } /* '' */
+.lcc-plus:before { content: '\e804'; } /* '' */
+.lcc-down-open:before { content: '\f004'; } /* '' */
+.lcc-to-end:before { content: '\f010'; } /* '' */
+.lcc-to-start:before { content: '\f011'; } /* '' */
+.lcc-fast-forward:before { content: '\f012'; } /* '' */
+.lcc-fast-backward:before { content: '\f013'; } /* '' */
+.lcc-spinner:before { content: '\f110'; } /* '' */
+.lcc-search:before { content: '\f50d'; } /* '' */

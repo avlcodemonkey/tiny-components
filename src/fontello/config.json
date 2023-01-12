@@ -1,6 +1,6 @@
 {
-  "name": "lit",
-  "css_prefix_text": "lit-",
+  "name": "lcc",
+  "css_prefix_text": "lcc-",
   "css_use_suffix": false,
   "hinting": true,
   "units_per_em": 1000,
@@ -61,12 +61,6 @@
       "src": "mfglabs"
     },
     {
-      "uid": "fccd3ea0efb711b849045bee686b1ceb",
-      "css": "spinner",
-      "code": 62760,
-      "src": "mfglabs"
-    },
-    {
       "uid": "62b0580ee8edc3a3edfbf68a47c852d5",
       "css": "pencil",
       "code": 59395,
@@ -77,6 +71,12 @@
       "css": "plus",
       "code": 59396,
       "src": "mfglabs"
+    },
+    {
+      "uid": "cda0cdcfd38f5f1d9255e722dad42012",
+      "css": "spinner",
+      "code": 61712,
+      "src": "fontawesome"
     }
   ]
 }
