@@ -26,6 +26,9 @@
             <lit-alert msg="you can't dismiss me" type="success" no-dismiss></lit-alert>
             <br />
 
+            <!-- permanently hidden because its not defined, just to show how the CSS works -->
+            <lit-test property="body">Body</lit-test>
+
             <div class="row">
                 <lit-table src="https://jsonplaceholder.typicode.com/posts" row-key-property="id" add-url="https://localhost/add" edit-url="https://localhost/edit?id=${id}&userId=${userId}" delete-url="https://localhost/delete?id=${id}&userId=${userId}">
                     <lit-column-header property="userId">UserId</lit-column-header>
