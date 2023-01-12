@@ -29,14 +29,13 @@
             <!-- permanently hidden because its not defined, just to show how the CSS works -->
             <lit-test property="body">Body</lit-test>
 
-            <div class="row">
-                <lit-table src="https://jsonplaceholder.typicode.com/posts" row-key-property="id" add-url="https://localhost/add" edit-url="https://localhost/edit?id=${id}&userId=${userId}" delete-url="https://localhost/delete?id=${id}&userId=${userId}">
-                    <lit-column-header property="userId">UserId</lit-column-header>
-                    <lit-column-header property="id">Id</lit-column-header>
-                    <lit-column-header property="title">Title</lit-column-header>
-                    <lit-column-header property="body">Body</lit-column-header>
-                </lit-table>
-            </div>
+            <lit-table src="https://jsonplaceholder.typicode.com/comments" row-key-property="id" add-url="https://localhost/add" edit-url="https://localhost/edit?id=${id}&postId=${postId}" delete-url="https://localhost/delete?id=${id}&postId=${postId}">
+                <lit-column-header property="postId">PostId</lit-column-header>
+                <lit-column-header property="id">Id</lit-column-header>
+                <lit-column-header property="name">Name</lit-column-header>
+                <lit-column-header property="email">Email</lit-column-header>
+                <lit-column-header property="body">Body</lit-column-header>
+            </lit-table>
         </div>
     </body>
 </html>
