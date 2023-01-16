@@ -28,9 +28,17 @@ export class LitTable extends LitElement {
 
     @state() data: Row[] = [];
 
+    @state() filteredRecordTotal = 0;
+
     @state() filteredData: Row[] = [];
 
     @state() sortColumns: SortColumn[] = [];
+
+    @state() page = 0;
+
+    @state() perPage = 10;
+
+    @state() maxPage = 0;
 
     @state() searchQuery = '';
 
@@ -48,6 +56,9 @@ export class LitTable extends LitElement {
             .col-min-width { min-width:100px; }
             .btn-action { padding: .7rem; }
             .btn-action + .btn-action { margin-left: .5rem; }
+            .flip-horizontal { transform: scaleX(-1); }
+            .flip-horizontal:active { transform: scaleX(-.98); }
+            .row + .row { margin-top: .5rem; }
         `,
     ];
 
@@ -133,13 +144,51 @@ export class LitTable extends LitElement {
         // create a new array and filter by the search query
         const filteredData = this.searchQuery ? this.data?.filter(this.filterArray.bind(this.searchQuery.toLowerCase())) : [...this.data];
 
-        // now sort the new array
+        // sort the new array
         filteredData.sort(this.sortColumns?.length ? this.compare.bind(this.sortColumns) : this.defaultCompare)
 
-        // now determine the correct slice of data for paging
+        // cache the total number of filtered records and max number of pages for paging
+        this.filteredRecordTotal = filteredData.length;
+        this.maxPage = Math.max(Math.ceil(this.filteredRecordTotal / this.perPage) - 1, 0);
 
-        // reassign our new array to trigger the update
-        this.filteredData = filteredData;
+        // determine the correct slice of data for the current page, and reassign our array to trigger the update
+        this.filteredData = filteredData.slice(this.perPage * this.page, (this.perPage * this.page) + this.perPage);
+    }
+
+    async fetchData() {
+        if (!this.src.length) {
+            return;
+        }
+
+        const data = await fetch(this.src).then((res) => res.json());
+        this.data = data.map((x: Row, index: number) => {
+            x._index = index;
+            return x;
+        }) ?? [];
+
+        this.filterData();
+    }
+
+    async firstUpdated() {
+        if (this.shadowRoot) {
+            const slot = this.shadowRoot.querySelector('slot');
+            if (slot) {
+                const assignedNodes = slot.assignedNodes();
+                this.columnHeaders = new Map(assignedNodes.filter((x) => x.nodeName === 'LIT-COLUMN-HEADER').map((x) => x as LitColumnHeader).map((x) => [x.property, x]));
+                this.sortColumns.forEach((x) => {
+                    const header = this.columnHeaders.get(x.property);
+                    if (header) {
+                        header.sortOrder = x.sortOrder;
+                    }
+                });
+            }
+        }
+
+        if (this.addUrl || this.editUrl || this.deleteUrl) {
+            this.hasActions = true;
+        }
+
+        await this.fetchData();
     }
 
     onSearchQueryInput(searchQuery: string) {
@@ -147,9 +196,42 @@ export class LitTable extends LitElement {
             clearTimeout(this.debounceTimer);
         }
         this.debounceTimer = setTimeout(() => {
+            if (this.searchQuery !== searchQuery) {
+                this.page = 0;
+            }
             this.searchQuery = searchQuery;
             this.filterData();
         }, 250);
+    }
+
+    onPerPageInput(perPage: string) {
+        const newVal = parseInt(perPage, 10) ?? 10;
+        if (this.perPage !== newVal) {
+            this.page = 0;
+        }
+        this.perPage = newVal;
+
+        this.filterData();
+    }
+
+    onFirstPageClick() {
+        this.page = 0;
+        this.filterData();
+    }
+
+    onLastPageClick() {
+        this.page = this.maxPage;
+        this.filterData();
+    }
+
+    onPreviousPageClick() {
+        this.page = Math.max(this.page - 1, 0);
+        this.filterData();
+    }
+
+    onNextPageClick() {
+        this.page = Math.min(this.page + 1, this.maxPage);
+        this.filterData();
     }
 
     renderActions(row: object) {
@@ -183,9 +265,16 @@ export class LitTable extends LitElement {
         `;
     }
 
+    renderCount() {
+        if (!this.filteredRecordTotal) {
+            return;
+        }
+        return html`${(this.page * this.perPage) + 1} to ${Math.min((this.page + 1) * this.perPage, this.filteredRecordTotal)} of ${this.filteredRecordTotal}`;
+    }
+
     renderInnerContent() {
         // Check if data is loaded
-        if (!this.data) {
+        if (!this.data.length) {
             return html`<slot name="loading"><h3><i class="lcc lcc-spinner animate-spin"></h3></slot>`;
         }
 
@@ -194,8 +283,13 @@ export class LitTable extends LitElement {
         return html`
             <div class="container">
                 <div class="row">
-                    <input type="text" name="litTableSearchQuery" placeholder="Search" class="col-6 col-3-md" value="${this.searchQuery}" 
-                        @input=${(e: InputEvent) => this.onSearchQueryInput((e.target as HTMLInputElement).value)}>
+                    <div class="col col-10-md">
+                        <input type="text" name="litTableSearchQuery" placeholder="Search" class="col-6 col-3-md" value="${this.searchQuery}"
+                            @input=${(e: InputEvent) => this.onSearchQueryInput((e.target as HTMLInputElement).value)}>
+                    </div>
+                    <div class="col col-2-md is-right is-vertical-align">
+                        ${this.renderCount()}
+                    </div>
                 </div>
                 <div class="row">
                     <table class="striped">
@@ -219,40 +313,36 @@ export class LitTable extends LitElement {
                         </tbody>
                     </table>
                 </div>
+                <div class="row">
+                    <div class="col col-10-md">
+                        <button class="button icon-only primary flip-horizontal" title="First" @click="${this.onFirstPageClick}" ?disabled="${this.page === 0}">
+                            <i class="lcc lcc-to-end"></i>
+                        </button>
+                        <button class="button icon-only primary flip-horizontal" title="Previous" @click="${this.onPreviousPageClick}" ?disabled="${this.page === 0}">
+                            <i class="lcc lcc-play"></i>
+                        </button>
+                        <button class="button icon-only primary" title="Next" @click="${this.onNextPageClick}" ?disabled="${this.page === this.maxPage}">
+                            <i class="lcc lcc-play"></i>
+                        </button>
+                        <button class="button icon-only primary" title="Last" @click="${this.onLastPageClick}" ?disabled="${this.page === this.maxPage}">
+                            <i class="lcc lcc-to-end"></i>
+                        </button>
+                    </div>
+                    <div class="col col-2-md">
+                        <select name="litTablePerPage" @input=${(e: InputEvent) => this.onPerPageInput((e.target as HTMLInputElement).value)}>
+                            <option disabled>Per Page</option>
+                            <option value="10" ?selected="${this.perPage === 10}">10</option>
+                            <option value="20" ?selected="${this.perPage === 20}">20</option>
+                            <option value="50" ?selected="${this.perPage === 50}">50</option>
+                            <option value="100" ?selected="${this.perPage === 100}">100</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         `;
     }
 
     render() {
         return html`<slot></slot>${this.renderInnerContent()}`;
-    }
-
-    async firstUpdated() {
-        if (this.shadowRoot) {
-            const slot = this.shadowRoot.querySelector('slot');
-            if (slot) {
-                const assignedNodes = slot.assignedNodes();
-                this.columnHeaders = new Map(assignedNodes.filter((x) => x.nodeName === 'LIT-COLUMN-HEADER').map((x) => x as LitColumnHeader).map((x) => [x.property, x]));
-            }
-        }
-
-        if (this.addUrl || this.editUrl || this.deleteUrl) {
-            this.hasActions = true;
-        }
-
-        await this.fetchData();
-    }
-
-    async fetchData() {
-        if (!this.src.length) {
-            return;
-        }
-
-        const data = await fetch(this.src).then((res) => res.json());
-        this.data = data.map((x: Row, index: number) => {
-            x._index = index;
-            return x;
-        }) ?? [];
-        this.filterData();
     }
 }
