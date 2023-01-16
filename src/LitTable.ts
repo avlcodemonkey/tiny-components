@@ -14,9 +14,18 @@ type SortColumn = {
     sortOrder: SortOrder;
 }
 
+enum Settings {
+    Page = 'page',
+    PerPage = 'perPage',
+    SearchQuery = 'searchQuery',
+    Sort = 'sort',
+}
+
 @customElement('lit-table')
 export class LitTable extends LitElement {
     @property() src = '';
+
+    @property({ attribute: 'id' }) tableKey = '';
 
     @property({ attribute: 'row-key-property' }) rowKeyProperty = '';
 
@@ -125,6 +134,8 @@ export class LitTable extends LitElement {
             }
         }
 
+        this.saveSetting(Settings.Sort, JSON.stringify(this.sortColumns));
+
         this.filterData();
     }
 
@@ -138,6 +149,19 @@ export class LitTable extends LitElement {
             newUrl = newUrl.replace(`$\{${x}}`, encodeURIComponent(row[x as keyof typeof row]));
         });
         return newUrl;
+    }
+
+    fetchSetting(name: string): string | null {
+        if (this.tableKey) {
+            return sessionStorage.getItem(`${this.tableKey}_${name}`);
+        }
+        return null;
+    }
+
+    saveSetting(name: string, value: string | number) {
+        if (this.tableKey) {
+            sessionStorage.setItem(`${this.tableKey}_${name}`, value.toString());
+        }
     }
 
     filterData() {
@@ -170,6 +194,12 @@ export class LitTable extends LitElement {
     }
 
     async firstUpdated() {
+        // check sessionStorage for saved settings
+        this.perPage = parseInt(this.fetchSetting(Settings.PerPage) ?? '10', 10);
+        this.page = parseInt(this.fetchSetting(Settings.Page) ?? '0', 10);
+        this.searchQuery = this.fetchSetting(Settings.SearchQuery) ?? '';
+        this.sortColumns = JSON.parse(this.fetchSetting(Settings.Sort) ?? '[]');
+
         if (this.shadowRoot) {
             const slot = this.shadowRoot.querySelector('slot');
             if (slot) {
@@ -198,6 +228,7 @@ export class LitTable extends LitElement {
         this.debounceTimer = setTimeout(() => {
             if (this.searchQuery !== searchQuery) {
                 this.page = 0;
+                this.saveSetting(Settings.SearchQuery, searchQuery);
             }
             this.searchQuery = searchQuery;
             this.filterData();
@@ -208,6 +239,7 @@ export class LitTable extends LitElement {
         const newVal = parseInt(perPage, 10) ?? 10;
         if (this.perPage !== newVal) {
             this.page = 0;
+            this.saveSetting(Settings.PerPage, newVal);
         }
         this.perPage = newVal;
 
@@ -216,21 +248,25 @@ export class LitTable extends LitElement {
 
     onFirstPageClick() {
         this.page = 0;
+        this.saveSetting(Settings.Page, this.page);
         this.filterData();
     }
 
     onLastPageClick() {
         this.page = this.maxPage;
+        this.saveSetting(Settings.Page, this.page);
         this.filterData();
     }
 
     onPreviousPageClick() {
         this.page = Math.max(this.page - 1, 0);
+        this.saveSetting(Settings.Page, this.page);
         this.filterData();
     }
 
     onNextPageClick() {
         this.page = Math.min(this.page + 1, this.maxPage);
+        this.saveSetting(Settings.Page, this.page);
         this.filterData();
     }
 
