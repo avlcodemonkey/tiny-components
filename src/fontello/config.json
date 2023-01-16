@@ -19,33 +19,9 @@
       "src": "mfglabs"
     },
     {
-      "uid": "75b228ebc26946ca00360ca10f052e3c",
-      "css": "to-start",
-      "code": 61457,
-      "src": "mfglabs"
-    },
-    {
-      "uid": "59a3c018a7c1888658e4d93df8f7558f",
-      "css": "fast-forward",
-      "code": 61458,
-      "src": "mfglabs"
-    },
-    {
-      "uid": "ee0b543733d75a60ff5647070dc1d4f8",
-      "css": "fast-backward",
-      "code": 61459,
-      "src": "mfglabs"
-    },
-    {
       "uid": "d9be617b7f2fe7843118ca2d3a1b8cca",
       "css": "down-open",
       "code": 61444,
-      "src": "mfglabs"
-    },
-    {
-      "uid": "ec21fe3492bb04d9e29103c319556ed8",
-      "css": "search",
-      "code": 62733,
       "src": "mfglabs"
     },
     {
@@ -77,6 +53,12 @@
       "css": "spinner",
       "code": 61712,
       "src": "fontawesome"
+    },
+    {
+      "uid": "3711151b8b34536498e2a7f4d5188ed2",
+      "css": "play",
+      "code": 61455,
+      "src": "mfglabs"
     }
   ]
 }

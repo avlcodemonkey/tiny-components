@@ -1,10 +1,8 @@
 @font-face {
   font-family: 'lcc';
-  src: url('../font/lcc.woff2?72828672');
-  src: url('../font/lcc.woff2?72828672') format('woff2');
+  src: url('../font/lcc.woff2?8183671');
   font-weight: normal;
   font-style: normal;
-  font-display: block;
 }
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
@@ -12,7 +10,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'lcc';
-    src: url('../font/lcc.svg?72828672#lcc') format('svg');
+    src: url('../font/lcc.svg?8183671#lcc') format('svg');
   }
 }
 */
@@ -57,9 +55,6 @@
 .lcc-pencil:before { content: '\e803'; } /* '' */
 .lcc-plus:before { content: '\e804'; } /* '' */
 .lcc-down-open:before { content: '\f004'; } /* '' */
+.lcc-play:before { content: '\f00f'; } /* '' */
 .lcc-to-end:before { content: '\f010'; } /* '' */
-.lcc-to-start:before { content: '\f011'; } /* '' */
-.lcc-fast-forward:before { content: '\f012'; } /* '' */
-.lcc-fast-backward:before { content: '\f013'; } /* '' */
 .lcc-spinner:before { content: '\f110'; } /* '' */
-.lcc-search:before { content: '\f50d'; } /* '' */
