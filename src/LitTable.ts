@@ -25,9 +25,9 @@ enum Settings {
 export class LitTable extends LitElement {
     @property() src = '';
 
-    @property({ attribute: 'id' }) tableKey = '';
+    @property({ attribute: 'key' }) key = '';
 
-    @property({ attribute: 'row-key-property' }) rowKeyProperty = '';
+    @property({ attribute: 'row-key' }) rowKey = '';
 
     @property({ attribute: 'add-url' }) addUrl = '';
 
@@ -151,15 +151,15 @@ export class LitTable extends LitElement {
     }
 
     fetchSetting(name: string): string | null {
-        if (this.tableKey) {
-            return sessionStorage.getItem(`${this.tableKey}_${name}`);
+        if (this.key) {
+            return sessionStorage.getItem(`${this.key}_${name}`);
         }
         return null;
     }
 
     saveSetting(name: string, value: string | number) {
-        if (this.tableKey) {
-            sessionStorage.setItem(`${this.tableKey}_${name}`, value.toString());
+        if (this.key) {
+            sessionStorage.setItem(`${this.key}_${name}`, value.toString());
         }
     }
 
@@ -285,7 +285,7 @@ export class LitTable extends LitElement {
         }
 
         return html`
-            ${repeat(this.filteredData, (row) => row[this.rowKeyProperty as keyof typeof row], (row) => {
+            ${repeat(this.filteredData, (row) => row[this.rowKey as keyof typeof row], (row) => {
                 return html`
                     <tr>
                         ${keys.map((key) => {
@@ -310,16 +310,16 @@ export class LitTable extends LitElement {
     renderInnerContent() {
         // Check if data is loaded
         if (!this.data.length) {
-            return html`<slot name="loading"><h3><i class="lcc lcc-spinner animate-spin"></h3></slot>`;
+            return html`<slot name="loading"><h1 class="text-center"><i class="lcc lcc-spinner animate-spin"></h1></slot>`;
         }
 
         const keys = [ ...(this.hasActions ? [this.actionName] : []),  ...Array.from(this.columnHeaders.keys()) ];
 
         return html`
-            <div class="container">
+            <div class="container" id="${this.key}">
                 <div class="row">
                     <div class="col col-10-md">
-                        <input type="text" name="litTableSearchQuery" placeholder="Search" class="col-6 col-3-md" value="${this.searchQuery}"
+                        <input type="text" name="litTableSearchQuery" placeholder="Search" class="col-6 col-4-md" value="${this.searchQuery}"
                             @input=${(e: InputEvent) => this.onSearchQueryInput((e.target as HTMLInputElement).value)}>
                     </div>
                     <div class="col col-2-md is-right is-vertical-align">
@@ -327,26 +327,28 @@ export class LitTable extends LitElement {
                     </div>
                 </div>
                 <div class="row">
-                    <table class="striped">
-                        <thead @litTableSorted="${this.onSorted}">
-                            <tr>
-                                ${keys.map((key) => {
-                                    if (key === this.actionName) {
-                                        return html`
-                                            <th class="col-min-width">
-                                                ${this.addUrl ? html`<a href="${this.addUrl}" class="button secondary btn-action" title="Add"><i class="lcc lcc-plus"></i></a>` : ''}
-                                            </th>
-                                        `;
-                                    }
-                                    const header = this.columnHeaders.get(key);
-                                    return html`<th class="col-min-width">${header ? header : key.replace(/\b([a-z])/g, (_, val) => val.toUpperCase())}</th>`;
-                                })}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${this.renderRows(keys)}
-                        </tbody>
-                    </table>
+                    <div class="col">
+                        <table class="striped">
+                            <thead @litTableSorted="${this.onSorted}">
+                                <tr>
+                                    ${keys.map((key) => {
+                                        if (key === this.actionName) {
+                                            return html`
+                                                <th class="col-min-width">
+                                                    ${this.addUrl ? html`<a href="${this.addUrl}" class="button secondary button-action icon" title="Add"><i class="lcc lcc-plus"></i></a>` : ''}
+                                                </th>
+                                            `;
+                                        }
+                                        const header = this.columnHeaders.get(key);
+                                        return html`<th class="col-min-width">${header ? header : key.replace(/\b([a-z])/g, (_, val) => val.toUpperCase())}</th>`;
+                                    })}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${this.renderRows(keys)}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col col-10-md">
