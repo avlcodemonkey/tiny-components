@@ -18,31 +18,59 @@
     </head>
     <body>
         <div class="container">
-            <br />
-            <div class="row">
-                <a class="button secondary col">Add</a>
-                <a class="button primary col">Edit</a>
-                <a class="button dark col">Delete</a>
-            </div>
-            <br />
-            
-            <lit-alert msg="success message" type="success"></lit-alert>
-            <lit-alert msg="error message" type="error"></lit-alert>
-            <!-- renders nothing since the type is invalid -->
-            <lit-alert msg="blah message" type="blah"></lit-alert>
-            <lit-alert msg="you can't dismiss me" type="success" no-dismiss></lit-alert>
-            <br />
+            <lit-nav is-full>
+                <lit-tab key="buttons">Buttons</lit-tab>
+                <lit-tab key="alerts">Alerts</lit-tab>
+                <lit-tab key="tables">Tables</lit-tab>
+
+                <div slot="buttons">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <a class="button">Default</a>
+                                <a class="button primary">Primary</a>
+                                <a class="button secondary">Secondary</a>
+                                <a class="button dark">Dark</a>
+                                <a class="button error">Error</a>
+                                <a class="button success">Success</a>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <a class="button outline">Outline</a>
+                                <a class="button primary outline">Primary</a>
+                                <a class="button secondary outline">Secondary</a>
+                                <a class="button dark outline">Dark</a>
+                                <a class="button clear">Clear</a>
+                                <a class="button icon">Icon <i class="lcc lcc-pencil"></i></a>
+                                <a class="button icon-only"><i class="lcc lcc-pencil"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div slot="alerts">
+                    <lit-alert msg="success message" type="success"></lit-alert>
+                    <lit-alert msg="error message" type="error"></lit-alert>
+                    <!-- renders nothing since the type is invalid -->
+                    <lit-alert msg="blah message" type="blah"></lit-alert>
+                    <lit-alert msg="you can't dismiss me" type="success" no-dismiss></lit-alert>
+                </div>
+
+                <div slot="tables">
+                    <lit-table key="testTable" src="https://jsonplaceholder.typicode.com/comments" row-key="id" add-url="https://localhost/add" edit-url="https://localhost/edit?id=${id}&postId=${postId}" delete-url="https://localhost/delete?id=${id}&postId=${postId}">
+                        <lit-column-header property="postId">PostId</lit-column-header>
+                        <lit-column-header property="id">Id</lit-column-header>
+                        <lit-column-header property="name">Name</lit-column-header>
+                        <lit-column-header property="email">Email</lit-column-header>
+                        <lit-column-header property="body">Body</lit-column-header>
+                    </lit-table>
+                </div>
+            </lit-nav>
 
             <!-- permanently hidden because its not defined, just to show how the CSS works -->
             <lit-test property="body">Body</lit-test>
-
-            <lit-table id="testTable" src="https://jsonplaceholder.typicode.com/comments" row-key-property="id" add-url="https://localhost/add" edit-url="https://localhost/edit?id=${id}&postId=${postId}" delete-url="https://localhost/delete?id=${id}&postId=${postId}">
-                <lit-column-header property="postId">PostId</lit-column-header>
-                <lit-column-header property="id">Id</lit-column-header>
-                <lit-column-header property="name">Name</lit-column-header>
-                <lit-column-header property="email">Email</lit-column-header>
-                <lit-column-header property="body">Body</lit-column-header>
-            </lit-table>
         </div>
     </body>
 </html>
