@@ -67,7 +67,6 @@ export class LitTable extends LitElement {
             .button-action + .button-action { margin-left: .5rem; }
             .flip-horizontal { transform: scaleX(-1); }
             .flip-horizontal:active { transform: scaleX(-.98); }
-            .row + .row { margin-top: .5rem; }
         `,
     ];
 
