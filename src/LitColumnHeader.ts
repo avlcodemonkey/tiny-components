@@ -1,4 +1,4 @@
-import { html, LitElement, unsafeCSS, css } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { SortOrder } from './enums/SortOrder';
 import styles from '../src/styles/index.scss?inline';
@@ -12,8 +12,6 @@ export class LitColumnHeader extends LitElement {
 
     static styles = [
         unsafeCSS(styles),
-        css`
-        `,
     ];
 
     toggleSort() {
