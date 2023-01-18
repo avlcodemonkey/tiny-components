@@ -33,12 +33,11 @@ export class LitAlert extends LitElement {
         }
 
         return html`
-            <div class="card bg-${this.type}">
+            <div class="card bg-${this.type} mb-1">
                 <div class="text-white">
                     ${this.renderInnerContent()}
                 </div>
             </div>
-            <br />
         `;
     }
 }
