@@ -63,8 +63,8 @@ export class LitTable extends LitElement {
         unsafeCSS(styles),
         css`
             .col-min-width { min-width:100px; }
-            .btn-action { padding: .7rem; }
-            .btn-action + .btn-action { margin-left: .5rem; }
+            .button-action { padding: .7rem; }
+            .button-action + .button-action { margin-left: .5rem; }
             .flip-horizontal { transform: scaleX(-1); }
             .flip-horizontal:active { transform: scaleX(-.98); }
             .row + .row { margin-top: .5rem; }
@@ -275,8 +275,8 @@ export class LitTable extends LitElement {
         const deleteUrl = this.replaceInUrl(this.deleteUrl, row);
 
         return html`
-            ${editUrl ? html`<a href="${editUrl}" class="button primary btn-action" title="Edit"><i class="lcc lcc-pencil"></i></a>` : ''}
-            ${deleteUrl ? html`<a href="${deleteUrl}" class="button dark btn-action" title="Delete"><i class="lcc lcc-dismiss"></i></a>` : ''}
+            ${editUrl ? html`<a href="${editUrl}" class="button primary button-action icon" title="Edit"><i class="lcc lcc-pencil"></i></a>` : ''}
+            ${deleteUrl ? html`<a href="${deleteUrl}" class="button dark button-action icon" title="Delete"><i class="lcc lcc-dismiss"></i></a>` : ''}
         `;
     }
 

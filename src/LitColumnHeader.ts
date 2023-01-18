@@ -40,7 +40,7 @@ export class LitColumnHeader extends LitElement {
             return;
         }
 
-        return html`<i class="lcc ${this.sortOrder === SortOrder.asc ? 'lcc-up' : 'lcc-down' } btn-cursor"></i>`;
+        return html`<i class="lcc ${this.sortOrder === SortOrder.asc ? 'lcc-up' : 'lcc-down' }"></i>`;
     }
 
     render() {
@@ -49,7 +49,7 @@ export class LitColumnHeader extends LitElement {
         }
 
         return html`
-            <span @click="${this.toggleSort}" class="btn-cursor">
+            <span @click="${this.toggleSort}" class="button-cursor">
                 <slot></slot>
                 ${this.renderSort()}
             </span>

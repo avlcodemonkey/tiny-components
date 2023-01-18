@@ -22,7 +22,7 @@ export class LitAlert extends LitElement {
 
         return html`
             <span class="col-11">${this.msg}</span>
-            <span class="col-1 pull-right"><i class="lcc lcc-dismiss btn-cursor" @click="${() => this.isDismissed = true }"></i></span>
+            <span class="col-1 pull-right"><i class="lcc lcc-dismiss button-cursor" @click="${() => this.isDismissed = true }"></i></span>
         `;
     }
 
