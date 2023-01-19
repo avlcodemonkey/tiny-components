@@ -19,9 +19,34 @@
     <body>
         <div class="container">
             <lit-nav is-full>
+                <lit-tab key="intro">Intro</lit-tab>
                 <lit-tab key="buttons">Buttons</lit-tab>
                 <lit-tab key="alerts">Alerts</lit-tab>
                 <lit-tab key="tables">Tables</lit-tab>
+
+                <div slot="intro">
+                    <p>
+                        A small web component library built using <a href="https://lit.dev/">Lit</a> with <a href="https://jenil.github.io/chota/">Chota</a>
+                        for styling. The goal is create a set of lightweight components that provide the core functionality needed for a typical CRUD app.
+                        Inspect this page to see how each component is used.
+                    </p>
+                    <p>
+                        This library is best used with a server-side rendered application (using something like Rails or DotNetCore Razor) that needs a
+                        bit more client side interactivity than the browser can natively provide. By combining web components with a library like
+                        <a href="https://htmx.org/">HTMX</a> or <a href="https://unpoly.com/">Unpoly</a>, you can provide SPA-like responsiveness with
+                        minimal client code. Web components are automatically rendered by the browser once registered, so you don't have to worry about
+                        using event handlers or Unpoly compilers to init client side functionality.
+                    </p>
+                    <p>
+                        The navigation menu above uses the <code>lit-nav</code> and <code>lit-tab</code> tags. <code>lit-nav</code> has a single boolean
+                        attribute <code>is-full</code> to control whether the nav menu is the full width of the container. The inner content of each
+                        <code>lit-tab</code> is displayed in the nav menu, and each <code>lit-tab</code> has a <code>key</code> attribute that specifies
+                        the unique key for that tab. The content displayed for each tab is contained in a <code>div</code> with a <code>slot</code> attribute
+                        value that corresponds to a <code>key</code> from the <code>lit-tab</code>. <code>lit-tab</code> can also have a boolean
+                        <code>is-active</code> attribute to specify that tab should be displayed by default. If no active tab is specified, the first tab
+                        is displayed by default. If multiple tabs have <code>is-active</code>, the first is displayed by default.
+                    </p>
+                </div>
 
                 <div slot="buttons">
                     <div class="container">
@@ -48,24 +73,81 @@
                             </div>
                         </div>
                     </div>
+                    <br />
+
+                    <details>
+                        <summary class="cursor-pointer">Would you like to know more?</summary>
+                        <p>
+                            Buttons are standard Chota styling, not a custom web component. They are included here since buttons are essential for any project
+                            and I wanted to show what's possible out of the box with Chota.
+                        </p>
+                    </details>
                 </div>
 
                 <div slot="alerts">
-                    <lit-alert msg="success message" type="success"></lit-alert>
-                    <lit-alert msg="error message" type="error"></lit-alert>
+                    <lit-alert type="success">Success</lit-alert>
+                    <lit-alert type="error">Error</lit-alert>
+                    <lit-alert type="success" no-dismiss>You can't dismiss me</lit-alert>
                     <!-- renders nothing since the type is invalid -->
-                    <lit-alert msg="blah message" type="blah"></lit-alert>
-                    <lit-alert msg="you can't dismiss me" type="success" no-dismiss></lit-alert>
+                    <lit-alert type="blah">Blah blah</lit-alert>
+                    <br />
+
+                    <details>
+                        <summary class="cursor-pointer">Would you like to know more?</summary>
+                        <p>
+                            Alerts are created using the <code>lit-alert</code> tag. The inner content is displayed within the alert.
+                            There are two attributes for alerts - <code>type</code> accepts a value of <code>success</code> or <code>error</code>,
+                            and <code>no-dismiss</code> which is a boolean that prevents the alert from being dismissed.
+                            An alert with an invalid <code>type</code> value will render nothing.
+                        </p>
+                    </details>
                 </div>
 
                 <div slot="tables">
                     <lit-table key="testTable" src="https://jsonplaceholder.typicode.com/comments" row-key="id" add-url="https://localhost/add" edit-url="https://localhost/edit?id=${id}&postId=${postId}" delete-url="https://localhost/delete?id=${id}&postId=${postId}">
-                        <lit-column-header property="postId">PostId</lit-column-header>
-                        <lit-column-header property="id">Id</lit-column-header>
-                        <lit-column-header property="name">Name</lit-column-header>
-                        <lit-column-header property="email">Email</lit-column-header>
-                        <lit-column-header property="body">Body</lit-column-header>
+                        <lit-table-header property="postId">PostId</lit-table-header>
+                        <lit-table-header property="id">Id</lit-table-header>
+                        <lit-table-header property="name">Name</lit-table-header>
+                        <lit-table-header property="email">Email</lit-table-header>
+                        <lit-table-header property="body">Body</lit-table-header>
                     </lit-table>
+                    <br />
+
+                    <details>
+                        <summary class="cursor-pointer">Would you like to know more?</summary>
+                        <p>
+                            <code>lit-table</code> renders JSON data in table format. It provides common table functionality including paging,
+                            filtering, and multi-column sorting. <code>lit-table</code> uses sessionStorage to remember these settings and
+                            restores the table to it's previous state if the user navigates away and back.  This component is designed to handle
+                            the most common use cases for a table in a CRUD app. But it is somewhat simplistic in that it does not offer complex
+                            rendering/formatting options currently.
+                        </p>
+                        <h5><code>lit-table</code> Attributes</h5>
+                        <dl>
+                            <dt><code>key</code></dt>
+                            <dd>Unique identifier for the table. Required to use sessionStorage, otherwise optional.</dd>
+                            <dt><code>src</code></dt>
+                            <dd>Specifies the URL to fetch JSON table data from.</dd>
+                            <dt><code>row-key</code></dt>
+                            <dd>Name of the property within the JSON data that uniquely identified each row.</dd>
+                            <dt><code>add-url</code></dt>
+                            <dd>Optional URL for adding records. If provided, an add button is displayed in the header of the left-most table column.</dd>
+                            <dt><code>edit-url</code></dt>
+                            <dd>Optional URL for editing records. If provided, an edit button is displayed in the left-most table column for each row.</dd>
+                            <dt><code>delete-url</code></dt>
+                            <dd>Optional URL for deleting records. If provided, a delete button is displayed in the left-most table column for each row.</dd>
+                        </dl>
+                        <p>
+                            Both the edit and delete URL properties can include values from the JSON data that are replaced when rendering the table.
+                            For example, the URL <code>https://localhost/edit?id=${id}</code> would replace <code>${id}</code> with the value of the
+                            <code>id</code> property for each row.
+                        </p>
+                        <p>
+                            Each <code>lit-table</code> contains one to many <code>lit-table-header</code> tags that define the columns to display
+                            in the table. The inner content of the tag is displayed in the table header.  The <code>property</code> attribute specifies the
+                            property in the JSON data to display for the column.
+                        </p>
+                    </details>
                 </div>
             </lit-nav>
 
