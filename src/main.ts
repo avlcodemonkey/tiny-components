@@ -1,4 +1,4 @@
-import './LitColumnHeader';
+import './LitTableHeader';
 import './LitTable';
 import './LitTab';
 import './LitNav';

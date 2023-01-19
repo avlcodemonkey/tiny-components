@@ -1,7 +1,7 @@
 import { html, css, LitElement, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit-html/directives/repeat.js';
-import type { LitColumnHeader } from './LitColumnHeader';
+import type { LitTableHeader } from './LitTableHeader';
 import { SortOrder } from './enums/SortOrder';
 import styles from '../src/styles/index.scss?inline';
 
@@ -55,8 +55,7 @@ export class LitTable extends LitElement {
 
     private actionName = 'actions';
 
-    private columnHeaders: Map<string, LitColumnHeader> = new Map();
-
+    private tableHeaders: Map<string, LitTableHeader> = new Map();
     private debounceTimer: ReturnType<typeof setTimeout> | undefined;
 
     static styles = [
@@ -203,9 +202,9 @@ export class LitTable extends LitElement {
             const slot = this.shadowRoot.querySelector('slot');
             if (slot) {
                 const assignedNodes = slot.assignedNodes();
-                this.columnHeaders = new Map(assignedNodes.filter((x) => x.nodeName === 'LIT-COLUMN-HEADER').map((x) => x as LitColumnHeader).map((x) => [x.property, x]));
+                this.tableHeaders = new Map(assignedNodes.filter((x) => x.nodeName === 'LIT-TABLE-HEADER').map((x) => x as LitTableHeader).map((x) => [x.property, x]));
                 this.sortColumns.forEach((x) => {
-                    const header = this.columnHeaders.get(x.property);
+                    const header = this.tableHeaders.get(x.property);
                     if (header) {
                         header.sortOrder = x.sortOrder;
                     }
@@ -313,7 +312,7 @@ export class LitTable extends LitElement {
             return html`<slot name="loading"><h1 class="text-center"><i class="lcc lcc-spinner animate-spin"></h1></slot>`;
         }
 
-        const keys = [ ...(this.hasActions ? [this.actionName] : []),  ...Array.from(this.columnHeaders.keys()) ];
+        const keys = [ ...(this.hasActions ? [this.actionName] : []),  ...Array.from(this.tableHeaders.keys()) ];
 
         return html`
             <div class="container" id="${this.key}">
@@ -339,7 +338,7 @@ export class LitTable extends LitElement {
                                                 </th>
                                             `;
                                         }
-                                        const header = this.columnHeaders.get(key);
+                                        const header = this.tableHeaders.get(key);
                                         return html`<th class="col-min-width">${header ? header : key.replace(/\b([a-z])/g, (_, val) => val.toUpperCase())}</th>`;
                                     })}
                                 </tr>
