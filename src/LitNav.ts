@@ -40,7 +40,6 @@ export class LitNav extends LitElement {
     }
 
     renderInnerContent() {
-        // Check if data is loaded
         if (!this.tabs.size) {
             return;
         }
@@ -49,24 +48,18 @@ export class LitNav extends LitElement {
 
         return html`
             <nav class="tabs ${this.isFull ? 'is-full' : ''}">
-                ${keys.map((key) => {
-                    const tab = this.tabs.get(key);
-                    // @todo add aria-current
-                    return html`
-                        <a class="tab ${this.activeTab === key ? 'active' : ''}" @click="${() => this.activeTab = key}" id="nav-${key}" aria-controls="${key}" role="tab">
-                            ${tab}
-                        </a>
-                    `;
-                })}
+                ${keys.map((key) => html`
+                    <a class="tab ${this.activeTab === key ? 'active' : ''}" @click="${() => this.activeTab = key}" id="nav-${key}" aria-controls="${key}" role="tab">
+                        ${this.tabs.get(key)}
+                    </a>
+                `)}
             </nav>
-            ${keys.map((key) => {
-                return html`
-                    <div class="tab-content ${this.activeTab === key ? '' : 'is-hidden'}" id="${key}" ?aria-current="${this.activeTab === key}" aria-labelledby="nav-${key}" role="tabpanel">
-                        <slot name="${key}"></slot>
-                    </div>
-                `;
-            })}
-    `;
+            ${keys.map((key) => html`
+                <div class="tab-content ${this.activeTab === key ? '' : 'is-hidden'}" id="${key}" ?aria-current="${this.activeTab === key}" aria-labelledby="nav-${key}" role="tabpanel">
+                    <slot name="${key}"></slot>
+                </div>
+            `)}
+        `;
     }
 
     render() {
