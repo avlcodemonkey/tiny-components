@@ -4,6 +4,7 @@ import { repeat } from 'lit-html/directives/repeat.js';
 import type { LitTableHeader } from './LitTableHeader';
 import { SortOrder } from './enums/SortOrder';
 import styles from '../src/styles/index.scss?inline';
+import { TableSettings } from './enums/TableSettings';
 
 interface Row {
     _index: number;
@@ -14,47 +15,26 @@ type SortColumn = {
     sortOrder: SortOrder;
 }
 
-enum Settings {
-    Page = 'page',
-    PerPage = 'perPage',
-    SearchQuery = 'searchQuery',
-    Sort = 'sort',
-}
-
 @customElement('lit-table')
 export class LitTable extends LitElement {
     @property() src = '';
-
     @property({ attribute: 'key' }) key = '';
-
     @property({ attribute: 'row-key' }) rowKey = '';
-
     @property({ attribute: 'add-url' }) addUrl = '';
-
     @property({ attribute: 'edit-url' }) editUrl = '';
-
     @property({ attribute: 'delete-url' }) deleteUrl = '';
 
     @state() data: Row[] = [];
-
     @state() filteredRecordTotal = 0;
-
     @state() filteredData: Row[] = [];
-
     @state() sortColumns: SortColumn[] = [];
-
     @state() page = 0;
-
     @state() perPage = 10;
-
     @state() maxPage = 0;
-
     @state() searchQuery = '';
 
     private hasActions?: boolean = false;
-
     private actionName = 'actions';
-
     private tableHeaders: Map<string, LitTableHeader> = new Map();
     private debounceTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -132,7 +112,7 @@ export class LitTable extends LitElement {
             }
         }
 
-        this.saveSetting(Settings.Sort, JSON.stringify(this.sortColumns));
+        this.saveSetting(TableSettings.Sort, JSON.stringify(this.sortColumns));
 
         this.filterData();
     }
@@ -193,10 +173,10 @@ export class LitTable extends LitElement {
 
     async firstUpdated() {
         // check sessionStorage for saved settings
-        this.perPage = parseInt(this.fetchSetting(Settings.PerPage) ?? '10', 10);
-        this.page = parseInt(this.fetchSetting(Settings.Page) ?? '0', 10);
-        this.searchQuery = this.fetchSetting(Settings.SearchQuery) ?? '';
-        this.sortColumns = JSON.parse(this.fetchSetting(Settings.Sort) ?? '[]');
+        this.perPage = parseInt(this.fetchSetting(TableSettings.PerPage) ?? '10', 10);
+        this.page = parseInt(this.fetchSetting(TableSettings.Page) ?? '0', 10);
+        this.searchQuery = this.fetchSetting(TableSettings.SearchQuery) ?? '';
+        this.sortColumns = JSON.parse(this.fetchSetting(TableSettings.Sort) ?? '[]');
 
         if (this.shadowRoot) {
             const slot = this.shadowRoot.querySelector('slot');
@@ -226,7 +206,7 @@ export class LitTable extends LitElement {
         this.debounceTimer = setTimeout(() => {
             if (this.searchQuery !== searchQuery) {
                 this.page = 0;
-                this.saveSetting(Settings.SearchQuery, searchQuery);
+                this.saveSetting(TableSettings.SearchQuery, searchQuery);
             }
             this.searchQuery = searchQuery;
             this.filterData();
@@ -237,7 +217,7 @@ export class LitTable extends LitElement {
         const newVal = parseInt(perPage, 10) ?? 10;
         if (this.perPage !== newVal) {
             this.page = 0;
-            this.saveSetting(Settings.PerPage, newVal);
+            this.saveSetting(TableSettings.PerPage, newVal);
         }
         this.perPage = newVal;
 
@@ -246,25 +226,25 @@ export class LitTable extends LitElement {
 
     onFirstPageClick() {
         this.page = 0;
-        this.saveSetting(Settings.Page, this.page);
+        this.saveSetting(TableSettings.Page, this.page);
         this.filterData();
     }
 
     onLastPageClick() {
         this.page = this.maxPage;
-        this.saveSetting(Settings.Page, this.page);
+        this.saveSetting(TableSettings.Page, this.page);
         this.filterData();
     }
 
     onPreviousPageClick() {
         this.page = Math.max(this.page - 1, 0);
-        this.saveSetting(Settings.Page, this.page);
+        this.saveSetting(TableSettings.Page, this.page);
         this.filterData();
     }
 
     onNextPageClick() {
         this.page = Math.min(this.page + 1, this.maxPage);
-        this.saveSetting(Settings.Page, this.page);
+        this.saveSetting(TableSettings.Page, this.page);
         this.filterData();
     }
 
