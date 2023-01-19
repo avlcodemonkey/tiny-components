@@ -21,7 +21,9 @@ export class LitAlert extends LitElement {
 
         return html`
             <span class="col-11"><slot></slot></span>
-            <span class="col-1 pull-right"><i class="lcc lcc-dismiss button-cursor" @click="${() => this.isDismissed = true }"></i></span>
+            <span class="col-1 pull-right">
+                <i class="lcc lcc-dismiss cursor-pointer" @click="${() => this.isDismissed = true}" title="Dismiss" aria-label="Dismiss" role="button"></i>
+            </span>
         `;
     }
 
@@ -32,7 +34,7 @@ export class LitAlert extends LitElement {
         }
 
         return html`
-            <div class="card bg-${this.type} mb-1">
+            <div class="card bg-${this.type} mb-1" role="alert">
                 <div class="text-white">
                     ${this.renderInnerContent()}
                 </div>
