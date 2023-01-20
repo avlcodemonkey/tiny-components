@@ -17,7 +17,7 @@ module.exports = {
         'linebreak-style': [2,'windows'],
         'class-methods-use-this': 'off',
         '@typescript-eslint/indent': ['error', 4, { 'ignoredNodes': ['TemplateLiteral *'] }],
-        'max-len': ['error', 200],
+        'max-len': ['error', 160],
         'import/extensions': 'off',
         'no-plusplus': 'off',
         '@typescript-eslint/lines-between-class-members': ['error', 'always', { 'exceptAfterSingleLine': true }],
