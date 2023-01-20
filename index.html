@@ -86,7 +86,7 @@
 
                 <div slot="alerts">
                     <lit-alert type="success">Success</lit-alert>
-                    <lit-alert type="error">Error</lit-alert>
+                    <lit-alert type="error" dismiss-msg="Close Me">Error</lit-alert>
                     <lit-alert type="success" no-dismiss>You can't dismiss me</lit-alert>
                     <!-- renders nothing since the type is invalid -->
                     <lit-alert type="blah">Blah blah</lit-alert>
@@ -96,10 +96,21 @@
                         <summary class="cursor-pointer">Would you like to know more?</summary>
                         <p>
                             Alerts are created using the <code>lit-alert</code> tag. The inner content is displayed within the alert.
-                            There are two attributes for alerts - <code>type</code> accepts a value of <code>success</code> or <code>error</code>,
-                            and <code>no-dismiss</code> which is a boolean that prevents the alert from being dismissed.
-                            An alert with an invalid <code>type</code> value will render nothing.
                         </p>
+                        <h5><code>lit-alert</code> Attributes</h5>
+                        <dl>
+                            <dt><code>type</code></dt>
+                            <dd>
+                                Controls the styling of the alert. Accepts a value of <code>success</code> or <code>error</code>. Defaults to
+                                <code>success</code>. An alert with an invalid <code>type</code> value will render nothing.
+                            </dd>
+                            <dt><code>no-dismiss</code></dt>
+                            <dd>Boolean that prevents the alert from being dismissed.</dd>
+                            <dt><code>dismiss-msg</code></dt>
+                            <dd>Optional text to use for the dismiss button title. Defaults to <code>Dismiss</code>.</dd>
+                        </dl>
+                    </details>
+                </div>
                     </details>
                 </div>
 
@@ -136,6 +147,27 @@
                             <dd>Optional URL for editing records. If provided, an edit button is displayed in the left-most table column for each row.</dd>
                             <dt><code>delete-url</code></dt>
                             <dd>Optional URL for deleting records. If provided, a delete button is displayed in the left-most table column for each row.</dd>
+
+                            <dt><code>no-data-msg</code></dt>
+                            <dd>Optional text to display when the table has no data. Defaults to <code>No matching data to display.</code>.</dd>
+                            <dt><code>search-msg</code></dt>
+                            <dd>Optional text to use for the search input placeholder. Defaults to <code>Search</code>.</dd>
+                            <dt><code>first-msg</code></dt>
+                            <dd>Optional text to use for the first page button title. Defaults to <code>First</code>.</dd>
+                            <dt><code>previous-msg</code></dt>
+                            <dd>Optional text to use for the previous page button title. Defaults to <code>Previous</code>.</dd>
+                            <dt><code>next-msg</code></dt>
+                            <dd>Optional text to use for the next page button title. Defaults to <code>Next</code>.</dd>
+                            <dt><code>last-msg</code></dt>
+                            <dd>Optional text to use for the last page button title. Defaults to <code>Last</code>.</dd>
+                            <dt><code>per-page-msg</code></dt>
+                            <dd>Optional text to use for the per page select placeholder. Defaults to <code>Per Page</code>.</dd>
+                            <dt><code>add-msg</code></dt>
+                            <dd>Optional text to use for the add button title. Defaults to <code>Add</code>.</dd>
+                            <dt><code>edit-msg</code></dt>
+                            <dd>Optional text to use for the edit button title. Defaults to <code>Edit</code>.</dd>
+                            <dt><code>delete-msg</code></dt>
+                            <dd>Optional text to use for the delete button title. Defaults to <code>Delete</code>.</dd>
                         </dl>
                         <p>
                             Both the edit and delete URL properties can include values from the JSON data that are replaced when rendering the table.
