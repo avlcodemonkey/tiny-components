@@ -1,4 +1,4 @@
-import { html, LitElement, unsafeCSS } from 'lit';
+import { html, LitElement, css, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { SortOrder } from './enums/SortOrder';
 import styles from '../src/styles/index.scss?inline';
@@ -12,6 +12,9 @@ export class LitTableHeader extends LitElement {
 
     static styles = [
         unsafeCSS(styles),
+        css`
+            .prevent-select { user-select: none; }
+        `,
     ];
 
     toggleSort() {
@@ -43,11 +46,11 @@ export class LitTableHeader extends LitElement {
 
     render() {
         if (this.noSort) {
-            return html`<slot></slot>`;
+            return html`<span class="prevent-select"><slot></slot></span>`;
         }
 
         return html`
-            <span @click="${this.toggleSort}" class="cursor-pointer" role="button">
+            <span @click="${this.toggleSort}" class="prevent-select cursor-pointer" role="button">
                 <slot></slot>
                 ${this.renderSort()}
             </span>
