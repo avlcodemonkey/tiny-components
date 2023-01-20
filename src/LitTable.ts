@@ -24,6 +24,17 @@ export class LitTable extends LitElement {
     @property({ attribute: 'edit-url' }) editUrl = '';
     @property({ attribute: 'delete-url' }) deleteUrl = '';
 
+    @property({ attribute: 'no-data-msg' }) noDataMsg = 'No matching data to display.';
+    @property({ attribute: 'search-msg' }) searchMsg = 'Search';
+    @property({ attribute: 'first-msg' }) firstMsg = 'First';
+    @property({ attribute: 'previous-msg' }) previousMsg = 'Previous';
+    @property({ attribute: 'next-msg' }) nextMsg = 'Next';
+    @property({ attribute: 'last-msg' }) lastMsg = 'Last';
+    @property({ attribute: 'per-page-msg' }) perPageMsg = 'Per Page';
+    @property({ attribute: 'add-msg' }) addMsg = 'Add';
+    @property({ attribute: 'edit-msg' }) editMsg = 'Edit';
+    @property({ attribute: 'delete-msg' }) deleteMsg = 'Delete';
+
     @state() data: Row[] = [];
     @state() filteredRecordTotal = 0;
     @state() filteredData: Row[] = [];
@@ -182,7 +193,9 @@ export class LitTable extends LitElement {
             const slot = this.shadowRoot.querySelector('slot');
             if (slot) {
                 const assignedNodes = slot.assignedNodes();
-                this.tableHeaders = new Map(assignedNodes.filter((x) => x.nodeName === 'LIT-TABLE-HEADER').map((x) => x as LitTableHeader).map((x) => [x.property, x]));
+                this.tableHeaders = new Map(assignedNodes.filter((x) => x.nodeName === 'LIT-TABLE-HEADER')
+                    .map((x) => x as LitTableHeader).map((x) => [x.property, x])
+                );
                 this.sortColumns.forEach((x) => {
                     const header = this.tableHeaders.get(x.property);
                     if (header) {
@@ -253,14 +266,20 @@ export class LitTable extends LitElement {
         const deleteUrl = this.replaceInUrl(this.deleteUrl, row);
 
         return html`
-            ${editUrl ? html`<a href="${editUrl}" class="button primary button-action icon" title="Edit"><i class="lcc lcc-pencil"></i></a>` : ''}
-            ${deleteUrl ? html`<a href="${deleteUrl}" class="button dark button-action icon" title="Delete"><i class="lcc lcc-dismiss"></i></a>` : ''}
+            ${editUrl ?
+                html`<a href="${editUrl}" class="button primary button-action icon" title="${this.editMsg}"><i class="lcc lcc-pencil"></i></a>`
+                : ''
+            }
+            ${deleteUrl ?
+                html`<a href="${deleteUrl}" class="button dark button-action icon" title="${this.deleteMsg}"><i class="lcc lcc-dismiss"></i></a>`
+                : ''
+            }
         `;
     }
 
     renderRows(keys: string[]) {
         if (!this.filteredData?.length) {
-            return html`<tr><td colspan="${keys.length}" class="text-center">No matching data to display.</td></tr>`;
+            return html`<tr><td colspan="${keys.length}" class="text-center">${this.noDataMsg}</td></tr>`;
         }
 
         return html`
@@ -298,7 +317,7 @@ export class LitTable extends LitElement {
             <div class="container" id="${this.key}">
                 <div class="row">
                     <div class="col col-10-md">
-                        <input type="text" name="litTableSearchQuery" placeholder="Search" class="col-6 col-4-md" value="${this.searchQuery}"
+                        <input type="text" name="litTableSearchQuery" placeholder="${this.searchMsg}" class="col-6 col-4-md" value="${this.searchQuery}"
                             @input=${(e: InputEvent) => this.onSearchQueryInput((e.target as HTMLInputElement).value)}>
                     </div>
                     <div class="col col-2-md is-right is-vertical-align">
@@ -314,12 +333,18 @@ export class LitTable extends LitElement {
                                         if (key === this.actionName) {
                                             return html`
                                                 <th class="col-min-width">
-                                                    ${this.addUrl ? html`<a href="${this.addUrl}" class="button secondary button-action icon" title="Add"><i class="lcc lcc-plus"></i></a>` : ''}
+                                                    ${this.addUrl ?
+                                                        html`<a href="${this.addUrl}" class="button secondary button-action icon" title="${this.addMsg}">
+                                                            <i class="lcc lcc-plus"></i>
+                                                        </a>` : ''
+                                                    }
                                                 </th>
                                             `;
                                         }
                                         const header = this.tableHeaders.get(key);
-                                        return html`<th class="col-min-width">${header ? header : key.replace(/\b([a-z])/g, (_, val) => val.toUpperCase())}</th>`;
+                                        return html`
+                                            <th class="col-min-width">${header ? header : key.replace(/\b([a-z])/g, (_, val) => val.toUpperCase())}</th>
+                                        `;
                                     })}
                                 </tr>
                             </thead>
@@ -331,22 +356,30 @@ export class LitTable extends LitElement {
                 </div>
                 <div class="row">
                     <div class="col col-10-md">
-                        <button class="button icon-only primary flip-horizontal" title="First" @click="${this.onFirstPageClick}" ?disabled="${this.page === 0}">
+                        <button class="button icon-only primary flip-horizontal" title="${this.firstMsg}" @click="${this.onFirstPageClick}"
+                            ?disabled="${this.page === 0}"
+                        >
                             <i class="lcc lcc-to-end"></i>
                         </button>
-                        <button class="button icon-only primary flip-horizontal" title="Previous" @click="${this.onPreviousPageClick}" ?disabled="${this.page === 0}">
+                        <button class="button icon-only primary flip-horizontal" title="${this.previousMsg}" @click="${this.onPreviousPageClick}"
+                            ?disabled="${this.page === 0}"
+                        >
                             <i class="lcc lcc-play"></i>
                         </button>
-                        <button class="button icon-only primary" title="Next" @click="${this.onNextPageClick}" ?disabled="${this.page === this.maxPage}">
+                        <button class="button icon-only primary" title="${this.nextMsg}" @click="${this.onNextPageClick}"
+                            ?disabled="${this.page === this.maxPage}"
+                        >
                             <i class="lcc lcc-play"></i>
                         </button>
-                        <button class="button icon-only primary" title="Last" @click="${this.onLastPageClick}" ?disabled="${this.page === this.maxPage}">
+                        <button class="button icon-only primary" title="${this.lastMsg}" @click="${this.onLastPageClick}"
+                            ?disabled="${this.page === this.maxPage}"
+                        >
                             <i class="lcc lcc-to-end"></i>
                         </button>
                     </div>
                     <div class="col col-2-md">
                         <select name="litTablePerPage" @input=${(e: InputEvent) => this.onPerPageInput((e.target as HTMLInputElement).value)}>
-                            <option disabled>Per Page</option>
+                            <option disabled>${this.perPageMsg}</option>
                             <option value="10" ?selected="${this.perPage === 10}">10</option>
                             <option value="20" ?selected="${this.perPage === 20}">20</option>
                             <option value="50" ?selected="${this.perPage === 50}">50</option>
