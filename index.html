@@ -22,6 +22,7 @@
                 <lit-tab key="intro">Intro</lit-tab>
                 <lit-tab key="buttons">Buttons</lit-tab>
                 <lit-tab key="alerts">Alerts</lit-tab>
+                <lit-tab key="modals">Modals</lit-tab>
                 <lit-tab key="tables">Tables</lit-tab>
 
                 <div slot="intro">
@@ -111,6 +112,28 @@
                         </dl>
                     </details>
                 </div>
+
+                <div slot="modals">
+                    <lit-modal title="Dialog Modal">
+                        inner content
+                    </lit-modal>
+                    <br />
+
+                    <lit-modal title="Confirm Modal" type="confirm">
+                        inner content
+                    </lit-modal>
+                    <br />
+
+                    <details>
+                        <summary class="cursor-pointer">Would you like to know more?</summary>
+                        <p>
+                            
+                        </p>
+                        <h5><code>lit-modal</code> Attributes</h5>
+                        <dl>
+                            <dt><code>type</code></dt>
+                            <dd>Controls the styling of the alert. Accepts a value of <code>success</code> or <code>error</code>. An alert with an invalid <code>type</code> value will render nothing.</dd>
+                        </dl>
                     </details>
                 </div>
 
