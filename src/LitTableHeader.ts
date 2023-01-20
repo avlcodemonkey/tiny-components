@@ -6,7 +6,7 @@ import styles from '../src/styles/index.scss?inline';
 @customElement('lit-table-header')
 export class LitTableHeader extends LitElement {
     @property() property = '';
-    @property({ attribute: 'no-sort' }) noSort = false;
+    @property({ type: Boolean, attribute: 'no-sort' }) noSort = false;
 
     @state() sortOrder: SortOrder | undefined = undefined;
 
