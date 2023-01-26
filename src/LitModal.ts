@@ -3,13 +3,13 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { ModalType } from './enums/ModalType';
 import styles from '../src/styles/index.scss?inline';
 
-const  focusableElements = 'button:not(.no-tab-focus), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+const focusableElements = 'button:not(.no-focus), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 @customElement('lit-modal')
 export class LitModal extends LitElement {
     @property({ attribute: 'key' }) key = '';
-    @property({ attribute: 'title' }) title = '';
     @property({ converter: (value) => value ? ModalType[value as keyof typeof ModalType] : undefined }) type: ModalType = ModalType.dialog;
+    @property() href = '';
 
     @property({ attribute: 'dismiss-msg' }) dismissMsg = 'Dismiss';
     @property({ attribute: 'confirm-button-msg' }) confirmButtonMsg = 'Okay';
@@ -39,31 +39,37 @@ export class LitModal extends LitElement {
                 width: 40%;
                 z-index: 16777271;
             }
+            form {
+                display: inline;
+            }
         `,
     ];
 
     onConfirmClick() {
         this.isDismissed = true;
-        this.dispatchEvent(new CustomEvent('litModalConfirmClick', {
+        this.dispatchEvent(new CustomEvent('litModalConfirm', {
             detail: {
                 key: this.key,
             },
             bubbles: true,
             composed: true,
         }));
-        console.log('confirmed');
+
+        const forms = Array.from(this.shadowRoot?.querySelectorAll('form') ?? []);
+        if (forms.length && forms[0].action) {
+            forms[0].submit();
+        }
     }
 
     cancel() {
         this.isDismissed = true;
-        this.dispatchEvent(new CustomEvent('litModalCancelClick', {
+        this.dispatchEvent(new CustomEvent('litModalCancel', {
             detail: {
                 key: this.key,
             },
             bubbles: true,
             composed: true,
         }));
-        console.log('canceled');
     }
 
     onOverlayClick(event: PointerEvent) {
@@ -125,6 +131,15 @@ export class LitModal extends LitElement {
         }
     }
 
+    async onSubmitClick(event: PointerEvent) {
+        event.preventDefault();
+        this.isDismissed = false;
+        await this.updateComplete;
+
+        // focus on dismiss button after rendering completes
+        (this.shadowRoot?.querySelector('.button-dismiss') as HTMLButtonElement)?.focus();
+    }
+
     renderDismissButton() {
         return html`
             <button class="button icon-only button-dismiss" @click="${this.onCancelClick}" title="${this.dismissMsg}" 
@@ -135,43 +150,37 @@ export class LitModal extends LitElement {
         `;
     }
 
-    renderHeaderContent() {
-        if (!this.title) {
-            return html`<span class="col-12 text-right">${this.renderDismissButton()}</span>`;
-        }
-
-        return html`
-            <span class="col-11">
-                <h4 id="${this.key}-title">${this.title}</h4>
-            </span>
-            <span class="col-1 text-right">
-                ${this.renderDismissButton()}
-            </span>
-        `;
-    }
-
     renderFooterContent() {
         if (this.type === ModalType.dialog) {
             return;
         }
 
         return html`
-            <footer class="text-right">
+            <footer class="text-right" role="presentation">
                 <button class="button primary" @click="${this.onConfirmClick}">${this.confirmButtonMsg}</button>
-                <button class="button" @click="${this.onCancelClick}">${this.cancelButtonMsg}</button>
+                <button class="button secondary" @click="${this.onCancelClick}">${this.cancelButtonMsg}</button>
             </footer>
         `;
     }
 
     renderModal() {
         return html`
-            <div id="${this.key}-modal" ?aria-hidden="${this.isDismissed}">
+            <div id="${this.key}-modal" ?aria-hidden="${this.isDismissed}" tabindex="-1">
                 <div class="modal-overlay" tabindex="-1" @click="${this.onOverlayClick}" @keydown="${this.onKeyDown}">
-                    <div class="modal-container card bd-grey" role="dialog" aria-modal="true" aria-labelledby="${this.key}-title">
-                        <header class="row">${this.renderHeaderContent()}</header>
-                        <div id="${this.key}-content" class="mb-1">
-                            <slot></slot>
-                        </div>
+                    <div class="modal-container card bd-grey" role="dialog" aria-modal="true" aria-labelledby="${this.key}-header"
+                        aria-describedby="${this.key}-content"
+                    >
+                        <header class="row" role="presentation">
+                            <span class="col-11" id="${this.key}-header">
+                                <slot name="modal-header"></slot>
+                            </span>
+                            <span class="col-1 text-right">
+                                ${this.renderDismissButton()}
+                            </span>
+                        </header>
+                        <section id="${this.key}-content" class="mb-1">
+                            <slot name="modal-content"></slot>
+                        </section>
                         ${this.renderFooterContent()}
                     </div>
                 </div>
@@ -179,18 +188,25 @@ export class LitModal extends LitElement {
         `;
     }
 
+    renderInnerContent() {
+        return html`
+            <slot name="button" @click="${this.onSubmitClick}"></slot>
+            <slot><button type="submit" class="button primary no-focus" @click="${this.onSubmitClick}">Click</button></slot>
+            ${this.isDismissed ? '' : this.renderModal()}
+        `;
+    }
+
     render() {
-        // don't render anything if type is invalid, or the modal has been dismissed
+        // don't render anything if type is invalid
         if (!this.type) {
             return;
         }
 
-        return html`
-            <div>
-                <button class="button primary no-tab-focus" @click="${() => this.isDismissed = false}">Primary</button>
-                ${this.isDismissed ? '' : this.renderModal()}
-            </div>
-        `;
+        if (this.type === ModalType.dialog || !this.href) {
+            return html`<div>${this.renderInnerContent()}</div>`;
+        }
+
+        return html`<form action="${this.href}">${this.renderInnerContent()}</form>`;
     }
 
     connectedCallback() {
