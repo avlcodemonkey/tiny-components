@@ -271,7 +271,11 @@ export class LitTable extends LitElement {
                 : ''
             }
             ${deleteUrl ?
-                html`<a href="${deleteUrl}" class="button dark button-action icon" title="${this.deleteMsg}"><i class="lcc lcc-dismiss"></i></a>`
+                html`<lit-modal href="${deleteUrl}" type="confirm">
+                    <span slot="button"><button class="button dark button-action icon" title="${this.deleteMsg}"><i class="lcc lcc-dismiss"></i></button></span>
+                    <span slot="modal-header"><h4>Confirm Delete</h4></span>
+                    <span slot="modal-content">Are you sure?</span>
+                </lit-modal>`
                 : ''
             }
         `;
