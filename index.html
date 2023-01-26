@@ -114,13 +114,24 @@
                 </div>
 
                 <div slot="modals">
-                    <lit-modal title="Dialog Modal">
-                        inner content
+                    <lit-modal>
+                        <div slot="button">
+                            <button class="button primary">Open Dialog</button>
+                        </div>
+                        <div slot="modal-header"><h4>Dialog Modal Header</h4></div>
+                        <div slot="modal-content">Dialog modal inner content</div>
                     </lit-modal>
                     <br />
 
-                    <lit-modal title="Confirm Modal" type="confirm">
-                        inner content
+                    <lit-modal><div slot="modal-header"><h4>Dialog Modal Header</h4></div><div slot="modal-content">Dialog modal inner content</div></lit-modal>
+                    <br />
+
+                    <lit-modal type="confirm" href="test">
+                        <div slot="button">
+                            <button class="button primary">Open Confirm</button>
+                        </div>
+                        <div slot="modal-header"><h4>Confirm Modal Header</h4></div>
+                        <div slot="modal-content">Confirm modal inner content</div>
                     </lit-modal>
                     <br />
 
@@ -132,7 +143,18 @@
                         <h5><code>lit-modal</code> Attributes</h5>
                         <dl>
                             <dt><code>type</code></dt>
-                            <dd>Controls the styling of the alert. Accepts a value of <code>success</code> or <code>error</code>. An alert with an invalid <code>type</code> value will render nothing.</dd>
+                            <dd>Controls what type of modal is displayed. Accepts a value of <code>dialog</code> or <code>confirm</code>. A modal with an invalid <code>type</code> value will render nothing.</dd>
+                            <dt><code>href</code></dt>
+                            <dd>URL to redirect to if the confirmation dialog is confirmed. Does nothing when type is <code>dialog</code>.</dd>
+                        </dl>
+                        <h5><code>lit-modal</code> Slots</h5>
+                        <dl>
+                            <dt><code>button</code></dt>
+                            <dd>Button that is displayed to trigger the modal. With an <code>href</code> attribute and <code>confirm</code> modal, confirming will trigger the redirect.</dd>
+                            <dt><code>modal-header</code></dt>
+                            <dd>Content displayed at the top of the modal in the header section.</dd>
+                            <dt><code>modal-content</code></dt>
+                            <dd>Content displayed in the body of the modal.</dd>
                         </dl>
                     </details>
                 </div>
