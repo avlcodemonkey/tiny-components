@@ -5,6 +5,7 @@ import type { LitTableHeader } from './LitTableHeader';
 import { SortOrder } from './enums/SortOrder';
 import styles from '../src/styles/index.scss?inline';
 import { TableSetting } from './enums/TableSetting';
+import { TranslateMixin } from './mixins/TranslateMixin';
 
 interface Row {
     _index: number;
@@ -16,24 +17,13 @@ type SortColumn = {
 }
 
 @customElement('lit-table')
-export class LitTable extends LitElement {
+export class LitTable extends TranslateMixin(LitElement) {
     @property() src = '';
     @property({ attribute: 'key' }) key = '';
     @property({ attribute: 'row-key' }) rowKey = '';
     @property({ attribute: 'add-url' }) addUrl = '';
     @property({ attribute: 'edit-url' }) editUrl = '';
     @property({ attribute: 'delete-url' }) deleteUrl = '';
-
-    @property({ attribute: 'no-data-msg' }) noDataMsg = 'No matching data to display.';
-    @property({ attribute: 'search-msg' }) searchMsg = 'Search';
-    @property({ attribute: 'first-msg' }) firstMsg = 'First';
-    @property({ attribute: 'previous-msg' }) previousMsg = 'Previous';
-    @property({ attribute: 'next-msg' }) nextMsg = 'Next';
-    @property({ attribute: 'last-msg' }) lastMsg = 'Last';
-    @property({ attribute: 'per-page-msg' }) perPageMsg = 'Per Page';
-    @property({ attribute: 'add-msg' }) addMsg = 'Add';
-    @property({ attribute: 'edit-msg' }) editMsg = 'Edit';
-    @property({ attribute: 'delete-msg' }) deleteMsg = 'Delete';
 
     @state() data: Row[] = [];
     @state() filteredRecordTotal = 0;
@@ -267,14 +257,16 @@ export class LitTable extends LitElement {
 
         return html`
             ${editUrl ?
-                html`<a href="${editUrl}" class="button primary button-action icon" title="${this.editMsg}"><i class="lcc lcc-pencil"></i></a>`
+                html`<a href="${editUrl}" class="button primary button-action icon" title="${this.localize('table.edit')}"><i class="lcc lcc-pencil"></i></a>`
                 : ''
             }
             ${deleteUrl ?
-                html`<lit-modal href="${deleteUrl}" type="confirm">
-                    <span slot="button"><button class="button dark button-action icon" title="${this.deleteMsg}"><i class="lcc lcc-dismiss"></i></button></span>
-                    <span slot="modal-header"><h4>Confirm Delete</h4></span>
-                    <span slot="modal-content">Are you sure?</span>
+                html`<lit-modal href="${deleteUrl}" type="confirm" lang="${this.lang}">
+                    <span slot="button">
+                        <button class="button dark button-action icon" title="${this.localize('table.delete')}"><i class="lcc lcc-dismiss"></i></button>
+                    </span>
+                    <span slot="modal-header"><h4>${this.localize('table.confirmDelete')}</h4></span>
+                    <span slot="modal-content">${this.localize('table.areYouSure')}</span>
                 </lit-modal>`
                 : ''
             }
@@ -283,7 +275,7 @@ export class LitTable extends LitElement {
 
     renderRows(keys: string[]) {
         if (!this.filteredData?.length) {
-            return html`<tr><td colspan="${keys.length}" class="text-center">${this.noDataMsg}</td></tr>`;
+            return html`<tr><td colspan="${keys.length}" class="text-center">${this.localize('table.noData')}</td></tr>`;
         }
 
         return html`
@@ -306,7 +298,8 @@ export class LitTable extends LitElement {
         if (!this.filteredRecordTotal) {
             return;
         }
-        return html`${(this.page * this.perPage) + 1} to ${Math.min((this.page + 1) * this.perPage, this.filteredRecordTotal)} of ${this.filteredRecordTotal}`;
+        return html`${(this.page * this.perPage) + 1} ${this.localize('table.to')} ${Math.min((this.page + 1) * this.perPage,
+            this.filteredRecordTotal)} ${this.localize('table.of')} ${this.filteredRecordTotal}`;
     }
 
     renderInnerContent() {
@@ -321,8 +314,9 @@ export class LitTable extends LitElement {
             <div class="container" id="${this.key}">
                 <div class="row">
                     <div class="col col-10-md">
-                        <input type="text" name="litTableSearchQuery" placeholder="${this.searchMsg}" class="col-6 col-4-md" value="${this.searchQuery}"
-                            @input=${(e: InputEvent) => this.onSearchQueryInput((e.target as HTMLInputElement).value)}>
+                        <input type="text" name="litTableSearchQuery" placeholder="${this.localize('table.search')}" class="col-6 col-4-md"
+                            value="${this.searchQuery}" @input=${(e: InputEvent) => this.onSearchQueryInput((e.target as HTMLInputElement).value)}
+                        >
                     </div>
                     <div class="col col-2-md is-right is-vertical-align">
                         ${this.renderCount()}
@@ -338,7 +332,9 @@ export class LitTable extends LitElement {
                                             return html`
                                                 <th class="col-min-width">
                                                     ${this.addUrl ?
-                                                        html`<a href="${this.addUrl}" class="button secondary button-action icon" title="${this.addMsg}">
+                                                        html`<a href="${this.addUrl}" class="button secondary button-action icon"
+                                                            title="${this.localize('table.add')}"
+                                                        >
                                                             <i class="lcc lcc-plus"></i>
                                                         </a>` : ''
                                                     }
@@ -360,22 +356,22 @@ export class LitTable extends LitElement {
                 </div>
                 <div class="row">
                     <div class="col col-10-md">
-                        <button class="button icon-only primary flip-horizontal" title="${this.firstMsg}" @click="${this.onFirstPageClick}"
+                        <button class="button icon-only primary flip-horizontal" title="${this.localize('table.first')}" @click="${this.onFirstPageClick}"
                             ?disabled="${this.page === 0}"
                         >
                             <i class="lcc lcc-to-end"></i>
                         </button>
-                        <button class="button icon-only primary flip-horizontal" title="${this.previousMsg}" @click="${this.onPreviousPageClick}"
+                        <button class="button icon-only primary flip-horizontal" title="${this.localize('table.previous')}" @click="${this.onPreviousPageClick}"
                             ?disabled="${this.page === 0}"
                         >
                             <i class="lcc lcc-play"></i>
                         </button>
-                        <button class="button icon-only primary" title="${this.nextMsg}" @click="${this.onNextPageClick}"
+                        <button class="button icon-only primary" title="${this.localize('table.next')}" @click="${this.onNextPageClick}"
                             ?disabled="${this.page === this.maxPage}"
                         >
                             <i class="lcc lcc-play"></i>
                         </button>
-                        <button class="button icon-only primary" title="${this.lastMsg}" @click="${this.onLastPageClick}"
+                        <button class="button icon-only primary" title="${this.localize('table.last')}" @click="${this.onLastPageClick}"
                             ?disabled="${this.page === this.maxPage}"
                         >
                             <i class="lcc lcc-to-end"></i>
@@ -383,7 +379,7 @@ export class LitTable extends LitElement {
                     </div>
                     <div class="col col-2-md">
                         <select name="litTablePerPage" @input=${(e: InputEvent) => this.onPerPageInput((e.target as HTMLInputElement).value)}>
-                            <option disabled>${this.perPageMsg}</option>
+                            <option disabled>${this.localize('table.perPage')}</option>
                             <option value="10" ?selected="${this.perPage === 10}">10</option>
                             <option value="20" ?selected="${this.perPage === 20}">20</option>
                             <option value="50" ?selected="${this.perPage === 50}">50</option>
