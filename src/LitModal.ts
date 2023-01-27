@@ -8,7 +8,7 @@ const focusableElements = 'button:not(.no-focus), [href], input, select, textare
 
 @customElement('lit-modal')
 export class LitModal extends TranslateMixin(LitElement) {
-    @property({ attribute: 'key' }) key = '';
+    @property() key = '';
     @property({ converter: (value) => value ? ModalType[value as keyof typeof ModalType] : undefined }) type: ModalType = ModalType.dialog;
     @property() href = '';
 
@@ -32,41 +32,18 @@ export class LitModal extends TranslateMixin(LitElement) {
                 position: fixed;
                 z-index: 16777270;
             }
-            .modal-container { 
-                width: 40%;
-                z-index: 16777271;
-            }
-            form {
-                display: inline;
-            }
+            .modal-container { width: 40%; z-index: 16777271; }
+            form { display: inline; }
         `,
     ];
 
     onConfirmClick() {
         this.isDismissed = true;
-        this.dispatchEvent(new CustomEvent('litModalConfirm', {
-            detail: {
-                key: this.key,
-            },
-            bubbles: true,
-            composed: true,
-        }));
 
         const forms = Array.from(this.shadowRoot?.querySelectorAll('form') ?? []);
         if (forms.length && forms[0].action) {
             forms[0].submit();
         }
-    }
-
-    cancel() {
-        this.isDismissed = true;
-        this.dispatchEvent(new CustomEvent('litModalCancel', {
-            detail: {
-                key: this.key,
-            },
-            bubbles: true,
-            composed: true,
-        }));
     }
 
     onOverlayClick(event: PointerEvent) {
@@ -75,17 +52,17 @@ export class LitModal extends TranslateMixin(LitElement) {
             return;
         }
 
-        this.cancel();
+        this.isDismissed = true;
     }
 
     onCancelClick() {
-        this.cancel();
+        this.isDismissed = true;
     }
 
     keepFocus(event: KeyboardEvent) {
         // find the elements within the component that can be focused on
         const focusableContent = Array.from(this.shadowRoot?.querySelectorAll(focusableElements) ?? []).map((x) => x as HTMLElement);
-        if (!focusableContent?.length) {
+        if (!focusableContent.length) {
             return;
         }
 
@@ -111,18 +88,16 @@ export class LitModal extends TranslateMixin(LitElement) {
 
         if (event.key) {
             if (event.key === 'Escape') {
-                this.cancel();
+                this.isDismissed = true;
             }
             if (event.key === 'Tab') {
-                // @todo keep focus
                 this.keepFocus(event);
             }
         } else if (event.keyCode) {
             if (event.keyCode === 27) {
-                this.cancel();
+                this.isDismissed = true;
             }
             if (event.keyCode === 9) {
-                // @todo keep focus
                 this.keepFocus(event);
             }
         }
