@@ -87,7 +87,8 @@
 
                 <div slot="alerts">
                     <lit-alert type="success">Success</lit-alert>
-                    <lit-alert type="error" dismiss-msg="Close Me">Error</lit-alert>
+                    <lit-alert type="error" lang="en">Error</lit-alert>
+                    <lit-alert type="error" lang="es">Español</lit-alert>
                     <lit-alert type="success" no-dismiss>You can't dismiss me</lit-alert>
                     <!-- renders nothing since the type is invalid -->
                     <lit-alert type="blah">Blah blah</lit-alert>
@@ -107,8 +108,8 @@
                             </dd>
                             <dt><code>no-dismiss</code></dt>
                             <dd>Boolean that prevents the alert from being dismissed.</dd>
-                            <dt><code>dismiss-msg</code></dt>
-                            <dd>Optional text to use for the dismiss button title. Defaults to <code>Dismiss</code>.</dd>
+                            <dt><code>lang</code></dt>
+                            <dd>Language for i18n. Accepts value of <code>en</code> or <code>es</code>. Defaults to <code>en</code>.</dd>
                         </dl>
                     </details>
                 </div>
@@ -135,6 +136,15 @@
                     </lit-modal>
                     <br />
 
+                    <lit-modal type="confirm" href="test" lang="es">
+                        <div slot="button">
+                            <button class="button primary">Abrir Confirmar</button>
+                        </div>
+                        <div slot="modal-header"><h4>Confirmar encabezado modal</h4></div>
+                        <div slot="modal-content">Confirmar contenido interno modal</div>
+                    </lit-modal>
+                    <br />
+
                     <details>
                         <summary class="cursor-pointer">Would you like to know more?</summary>
                         <p>
@@ -146,11 +156,13 @@
                             <dd>Controls what type of modal is displayed. Accepts a value of <code>dialog</code> or <code>confirm</code>. A modal with an invalid <code>type</code> value will render nothing.</dd>
                             <dt><code>href</code></dt>
                             <dd>URL to redirect to if the confirmation dialog is confirmed. Does nothing when type is <code>dialog</code>.</dd>
+                            <dt><code>lang</code></dt>
+                            <dd>Language for i18n. Accepts value of <code>en</code> or <code>es</code>. Defaults to <code>en</code>.</dd>
                         </dl>
                         <h5><code>lit-modal</code> Slots</h5>
                         <dl>
                             <dt><code>button</code></dt>
-                            <dd>Button that is displayed to trigger the modal. With an <code>href</code> attribute and <code>confirm</code> modal, confirming will trigger the redirect.</dd>
+                            <dd>Button that is displayed to trigger the modal.</dd>
                             <dt><code>modal-header</code></dt>
                             <dd>Content displayed at the top of the modal in the header section.</dd>
                             <dt><code>modal-content</code></dt>
@@ -160,7 +172,9 @@
                 </div>
 
                 <div slot="tables">
-                    <lit-table key="testTable" src="https://jsonplaceholder.typicode.com/comments" row-key="id" add-url="https://localhost/add" edit-url="https://localhost/edit?id=${id}&postId=${postId}" delete-url="https://localhost/delete?id=${id}&postId=${postId}">
+                    <lit-table key="testTable" src="https://jsonplaceholder.typicode.com/comments" row-key="id" add-url="https://localhost/add"
+                        edit-url="https://localhost/edit?id=${id}&postId=${postId}" delete-url="https://localhost/delete?id=${id}&postId=${postId}" lang="es"
+                    >
                         <lit-table-header property="postId">PostId</lit-table-header>
                         <lit-table-header property="id">Id</lit-table-header>
                         <lit-table-header property="name">Name</lit-table-header>
@@ -185,34 +199,15 @@
                             <dt><code>src</code></dt>
                             <dd>Specifies the URL to fetch JSON table data from.</dd>
                             <dt><code>row-key</code></dt>
-                            <dd>Name of the property within the JSON data that uniquely identified each row.</dd>
+                            <dd>Name of the property within the JSON data that uniquely identifies each row.</dd>
                             <dt><code>add-url</code></dt>
                             <dd>Optional URL for adding records. If provided, an add button is displayed in the header of the left-most table column.</dd>
                             <dt><code>edit-url</code></dt>
                             <dd>Optional URL for editing records. If provided, an edit button is displayed in the left-most table column for each row.</dd>
                             <dt><code>delete-url</code></dt>
-                            <dd>Optional URL for deleting records. If provided, a delete button is displayed in the left-most table column for each row.</dd>
-
-                            <dt><code>no-data-msg</code></dt>
-                            <dd>Optional text to display when the table has no data. Defaults to <code>No matching data to display.</code>.</dd>
-                            <dt><code>search-msg</code></dt>
-                            <dd>Optional text to use for the search input placeholder. Defaults to <code>Search</code>.</dd>
-                            <dt><code>first-msg</code></dt>
-                            <dd>Optional text to use for the first page button title. Defaults to <code>First</code>.</dd>
-                            <dt><code>previous-msg</code></dt>
-                            <dd>Optional text to use for the previous page button title. Defaults to <code>Previous</code>.</dd>
-                            <dt><code>next-msg</code></dt>
-                            <dd>Optional text to use for the next page button title. Defaults to <code>Next</code>.</dd>
-                            <dt><code>last-msg</code></dt>
-                            <dd>Optional text to use for the last page button title. Defaults to <code>Last</code>.</dd>
-                            <dt><code>per-page-msg</code></dt>
-                            <dd>Optional text to use for the per page select placeholder. Defaults to <code>Per Page</code>.</dd>
-                            <dt><code>add-msg</code></dt>
-                            <dd>Optional text to use for the add button title. Defaults to <code>Add</code>.</dd>
-                            <dt><code>edit-msg</code></dt>
-                            <dd>Optional text to use for the edit button title. Defaults to <code>Edit</code>.</dd>
-                            <dt><code>delete-msg</code></dt>
-                            <dd>Optional text to use for the delete button title. Defaults to <code>Delete</code>.</dd>
+                            <dd>Optional URL for deleting records. If provided, a delete button is displayed in the left-most table column for each row. A modal is used to confirm before redirecting to the URL.</dd>
+                            <dt><code>lang</code></dt>
+                            <dd>Language for i18n. Accepts value of <code>en</code> or <code>es</code>. Defaults to <code>en</code>.</dd>
                         </dl>
                         <p>
                             Both the edit and delete URL properties can include values from the JSON data that are replaced when rendering the table.
