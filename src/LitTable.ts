@@ -19,7 +19,7 @@ type SortColumn = {
 @customElement('lit-table')
 export class LitTable extends TranslateMixin(LitElement) {
     @property() src = '';
-    @property({ attribute: 'key' }) key = '';
+    @property() key = '';
     @property({ attribute: 'row-key' }) rowKey = '';
     @property({ attribute: 'add-url' }) addUrl = '';
     @property({ attribute: 'edit-url' }) editUrl = '';
@@ -33,10 +33,10 @@ export class LitTable extends TranslateMixin(LitElement) {
     @state() perPage = 10;
     @state() maxPage = 0;
     @state() searchQuery = '';
+    @state() hasActions?: boolean = false;
+    @state() tableHeaders: Map<string, LitTableHeader> = new Map();
 
-    private hasActions?: boolean = false;
     private actionName = 'actions';
-    private tableHeaders: Map<string, LitTableHeader> = new Map();
     private debounceTimer: ReturnType<typeof setTimeout> | undefined;
 
     static styles = [
