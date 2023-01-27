@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import { defineConfig } from 'vite'
 import { resolve } from 'path';
 
@@ -19,5 +21,9 @@ export default defineConfig({
         alias: {
             '~chota': resolve(__dirname, 'node_modules/chota'),
         },
+    },
+    test: {
+        globals: true,
+        environment: 'jsdom',
     },
 })

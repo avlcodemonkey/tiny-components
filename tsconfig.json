@@ -18,6 +18,6 @@
     "useDefineForClassFields": false,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts","vite.config.ts"],
+  "include": ["src/**/*.ts","vite.config.ts","test/**/*.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

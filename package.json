@@ -15,7 +15,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "npx eslint . --ext .js,.ts"
+    "lint": "npx eslint . --ext .js,.ts",
+    "test": "vitest"
   },
   "dependencies": {
     "chota": "^0.8.0",
@@ -27,7 +28,9 @@
     "@typescript-eslint/parser": "^5.47.0",
     "eslint": "^8.30.0",
     "eslint-plugin-lit": "^1.7.2",
+    "jsdom": "^21.1.0",
     "typescript": "^4.9.3",
-    "vite": "^4.0.0"
+    "vite": "^4.0.0",
+    "vitest": "^0.28.3"
   }
 }
