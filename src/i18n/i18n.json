@@ -1,0 +1,54 @@
+{
+    "en": {
+        "alert": {
+            "dismiss": "Dismiss"
+        },
+        "modal": {
+            "dismiss": "Dismiss",
+            "confirm": "Confirm",
+            "cancel": "Cancel"
+        },
+        "table": { 
+            "noData": "No matching data to display.",
+            "search": "Search",
+            "first": "First",
+            "previous": "Previous",
+            "next": "Next",
+            "last": "Last",
+            "perPage": "Per Page",
+            "add": "Add",
+            "edit": "Edit",
+            "delete": "Delete",
+            "confirmDelete": "Confirm Delete",
+            "areYouSure": "Are you sure?",
+            "to": "to",
+            "of": "of"
+        }
+    },
+    "es": {
+        "alert": {
+            "dismiss": "Despedir"
+        },
+        "modal": {
+            "dismiss": "Despedir",
+            "confirm": "Confirmar",
+            "cancel": "Cancelar"
+        },
+        "table": { 
+            "noData": "No hay datos coincidentes para mostrar.",
+            "search": "Buscar",
+            "first": "Primero",
+            "previous": "Previo",
+            "next": "Próximo",
+            "last": "Último",
+            "perPage": "Por página",
+            "add": "Agregar",
+            "edit": "Editar",
+            "delete": "Borrar",
+            "confirmDelete": "Confirmar eliminación",
+            "areYouSure": "Estas seguro?",
+            "to": "a",
+            "of": "de"
+        }
+    }
+}
