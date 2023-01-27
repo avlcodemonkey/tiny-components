@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 
 @customElement('lit-tab')
 export class LitTab extends LitElement {
-    @property({ attribute: 'key' }) key = '';
+    @property() key = '';
     @property({ type: Boolean, attribute: 'is-active' }) isActive = false;
 
     render() {

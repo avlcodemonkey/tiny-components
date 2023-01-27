@@ -8,8 +8,7 @@ export class LitNav extends LitElement {
     @property({ type: Boolean, attribute: 'is-full' }) isFull = false;
 
     @state() activeTab = '';
-
-    private tabs: Map<string, LitTab> = new Map();
+    @state() tabs: Map<string, LitTab> = new Map();
 
     static styles = [
         unsafeCSS(styles),
@@ -20,23 +19,24 @@ export class LitNav extends LitElement {
     ];
 
     async firstUpdated() {
-        if (this.shadowRoot) {
-            const slot = this.shadowRoot.querySelector('slot');
-            if (slot) {
-                const assignedNodes = slot.assignedNodes();
-                this.tabs = new Map(assignedNodes.filter((x) => x.nodeName === 'LIT-TAB').map((x) => x as LitTab).map((x) => [x.key, x]));
+        if (!this.shadowRoot) {
+            return;
+        }
 
-                this.tabs.forEach((tab, key) => {
-                    if (tab.isActive && !this.activeTab) {
-                        this.activeTab = key;
-                    }
-                });
-                if (!this.activeTab) {
-                    this.activeTab = this.tabs.entries().next().value[0];
+        const slot = this.shadowRoot.querySelector('slot');
+        if (slot) {
+            const assignedNodes = slot.assignedNodes();
+            this.tabs = new Map(assignedNodes.filter((x) => x.nodeName === 'LIT-TAB').map((x) => x as LitTab).map((x) => [x.key, x]));
+
+            this.tabs.forEach((tab, key) => {
+                if (tab.isActive && !this.activeTab) {
+                    this.activeTab = key;
                 }
+            });
+            if (!this.activeTab) {
+                this.activeTab = this.tabs.entries().next().value[0];
             }
         }
-        this.requestUpdate();
     }
 
     renderInnerContent() {
