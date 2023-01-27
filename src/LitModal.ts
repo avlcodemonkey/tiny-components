@@ -1,19 +1,16 @@
 import { html, LitElement, unsafeCSS, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { ModalType } from './enums/ModalType';
+import { TranslateMixin } from './mixins/TranslateMixin';
 import styles from '../src/styles/index.scss?inline';
 
 const focusableElements = 'button:not(.no-focus), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 @customElement('lit-modal')
-export class LitModal extends LitElement {
+export class LitModal extends TranslateMixin(LitElement) {
     @property({ attribute: 'key' }) key = '';
     @property({ converter: (value) => value ? ModalType[value as keyof typeof ModalType] : undefined }) type: ModalType = ModalType.dialog;
     @property() href = '';
-
-    @property({ attribute: 'dismiss-msg' }) dismissMsg = 'Dismiss';
-    @property({ attribute: 'confirm-button-msg' }) confirmButtonMsg = 'Okay';
-    @property({ attribute: 'cancel-button-msg' }) cancelButtonMsg = 'Cancel';
 
     @state() isDismissed = true;
 
@@ -142,8 +139,8 @@ export class LitModal extends LitElement {
 
     renderDismissButton() {
         return html`
-            <button class="button icon-only button-dismiss" @click="${this.onCancelClick}" title="${this.dismissMsg}" 
-                aria-label="${this.dismissMsg}"
+            <button class="button icon-only button-dismiss" @click="${this.onCancelClick}" title="${this.localize('modal.dismiss')}"
+                aria-label="${this.localize('modal.dismiss')}"
             >
                 <i class="lcc lcc-dismiss"></i>
             </button>
@@ -157,8 +154,8 @@ export class LitModal extends LitElement {
 
         return html`
             <footer class="text-right" role="presentation">
-                <button class="button primary" @click="${this.onConfirmClick}">${this.confirmButtonMsg}</button>
-                <button class="button secondary" @click="${this.onCancelClick}">${this.cancelButtonMsg}</button>
+                <button class="button primary" @click="${this.onConfirmClick}">${this.localize('modal.confirm')}</button>
+                <button class="button secondary" @click="${this.onCancelClick}">${this.localize('modal.cancel')}</button>
             </footer>
         `;
     }
