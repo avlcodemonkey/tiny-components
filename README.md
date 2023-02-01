@@ -1,2 +1,2 @@
-# lit-chota-components
+# tiny-components
 Web components created using Lit and Chota.
