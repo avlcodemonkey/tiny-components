@@ -66,15 +66,17 @@ export class LitModal extends TranslateMixin(LitElement) {
             return;
         }
 
+        const activeElement = this.shadowRoot?.activeElement;
+        const lastIndex = focusableContent.length - 1;
         if (event.shiftKey) {
             // if this is the first focusable element, loop around to the last
-            if (this.shadowRoot?.activeElement === focusableContent[0]) {
-                focusableContent[focusableContent.length - 1].focus();
+            if (activeElement === focusableContent[0]) {
+                focusableContent[lastIndex].focus();
                 event.preventDefault();
             }
         } else {
             // if this is the last focusable element, loop around to the first
-            if (this.shadowRoot?.activeElement === focusableContent[focusableContent.length - 1]) {
+            if (activeElement === focusableContent[lastIndex]) {
                 focusableContent[0].focus();
                 event.preventDefault();
             }
@@ -113,10 +115,9 @@ export class LitModal extends TranslateMixin(LitElement) {
     }
 
     renderDismissButton() {
+        const title = this.localize('modal.dismiss');
         return html`
-            <button class="button icon-only button-dismiss" @click="${this.onCancelClick}" title="${this.localize('modal.dismiss')}"
-                aria-label="${this.localize('modal.dismiss')}"
-            >
+            <button class="button icon-only button-dismiss" @click="${this.onCancelClick}" title="${title}" aria-label="${title}">
                 <i class="lcc lcc-dismiss"></i>
             </button>
         `;
