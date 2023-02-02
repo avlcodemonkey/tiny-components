@@ -12,10 +12,7 @@ export class LitNav extends LitElement {
 
     static styles = [
         unsafeCSS(styles),
-        css`
-            .tab { cursor: pointer; }
-            .tab-content { padding: 2rem 0; }
-        `,
+        css`.tab-content { padding: 2rem 0; }`,
     ];
 
     async firstUpdated() {
@@ -49,7 +46,7 @@ export class LitNav extends LitElement {
         return html`
             <nav class="tabs ${this.isFull ? 'is-full' : ''}">
                 ${keys.map((key) => html`
-                    <a class="tab ${this.activeTab === key ? 'active' : ''}" @click="${() => this.activeTab = key}"
+                    <a class="cursor-pointer ${this.activeTab === key ? 'active' : ''}" @click="${() => this.activeTab = key}"
                         id="nav-${key}" aria-controls="${key}" role="tab"
                     >
                         ${this.tabs.get(key)}

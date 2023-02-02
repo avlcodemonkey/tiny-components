@@ -30,7 +30,7 @@ function getNavRoot(): HTMLElement | null | undefined {
 }
 
 function getTabLinks(): Array<HTMLElement> {
-    return Array.from(getNavRoot()?.querySelectorAll('.tab') ?? []);
+    return Array.from(getNavRoot()?.querySelectorAll('a') ?? []);
 }
 
 function getTabContents(): Array<HTMLElement> {
