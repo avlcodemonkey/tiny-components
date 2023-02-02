@@ -89,7 +89,7 @@ describe('not dismissible alert', async () => {
     })
 
     it('should have test text', async () => {
-        const slots = getAlertDiv()?.querySelector('.text-white')?.querySelectorAll('slot');
+        const slots = getAlertDiv()?.querySelectorAll('slot');
         expect(slots?.length).toBe(1);
         expect(slots && slots[0].assignedNodes()[0].textContent).toContain(textContent);
     })

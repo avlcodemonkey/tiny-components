@@ -44,12 +44,6 @@ export class LitAlert extends TranslateMixin(LitElement) {
             return;
         }
 
-        return html`
-            <div class="card bg-${this.type} mb-1" role="alert">
-                <div class="text-white">
-                    ${this.renderInnerContent()}
-                </div>
-            </div>
-        `;
+        return html`<div class="card bg-${this.type} mb-1 text-white" role="alert">${this.renderInnerContent()}</div>`;
     }
 }
