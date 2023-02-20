@@ -19,7 +19,6 @@ export class LitModal extends TranslateMixin(LitElement) {
     static styles = [
         unsafeCSS(styles),
         css`
-            .button-dismiss { border: none; color: inherit; background: inherit; margin-top: -1rem; }
             .modal-overlay {
                 background: rgba(0,0,0,.6);
                 top: 0;

@@ -15,7 +15,6 @@ export class LitAlert extends TranslateMixin(LitElement) {
         unsafeCSS(styles),
         css`
             col, [class*=" col-"], [class^="col-"] { margin: 0 calc(var(--grid-gutter) / 2) 0 calc(var(--grid-gutter) / 2); }
-            .button-dismiss { border: none; color: inherit; background: inherit; margin-top: -1rem; }
         `,
     ];
 
