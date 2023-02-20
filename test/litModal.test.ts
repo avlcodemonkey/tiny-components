@@ -234,3 +234,20 @@ describe('spanish confirm modal', async () => {
         expect(dismissBtn?.title).toBe(i18nJson.es.modal.dismiss);
     });
 });
+
+describe('modal with invalid type', async () => {
+    beforeEach(async () => {
+        document.body.innerHTML = `
+            <lit-modal lang="en" key="${modal1Key}" type="gibberish" href="${modal1Href}">
+                <div slot="button"><button class="button primary">${modal1Btn}</button></div>
+                <div slot="modal-header">${modal1Header}</div>
+                <div slot="modal-content">${modal1Content}</div>
+            </lit-modal>
+        `;
+        await isRendered();
+    });
+
+    it('should render nothing', async () => {
+        expect(getShadowRoot()?.querySelectorAll('div').length).toBeFalsy();
+    });
+});
