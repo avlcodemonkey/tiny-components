@@ -30,7 +30,7 @@ export class LitNav extends LitElement {
                     this.activeTab = key;
                 }
             });
-            if (!this.activeTab) {
+            if (!this.activeTab && this.tabs.size) {
                 this.activeTab = this.tabs.entries().next().value[0];
             }
         }
