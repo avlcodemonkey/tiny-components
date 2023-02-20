@@ -41,7 +41,7 @@ export class LitTableHeader extends LitElement {
             return;
         }
 
-        return html`<i class="lcc lcc-${this.sortOrder === SortOrder.asc ? 'up' : 'down' }"></i>`;
+        return this.sortOrder === SortOrder.asc ? html`&#129053;` : html`&#129055;`;
     }
 
     render() {

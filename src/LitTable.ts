@@ -43,10 +43,12 @@ export class LitTable extends TranslateMixin(LitElement) {
         unsafeCSS(styles),
         css`
             .col-min-width { min-width:100px; }
-            .button-action { padding: .7rem; }
+            .button-action { padding: .7rem; font-weight: bold; }
             .button-action + .button-action { margin-left: .5rem; }
             .flip-horizontal { transform: scaleX(-1); }
             .flip-horizontal:active { transform: scaleX(-.98); }
+            .rotate45 { transform: rotate(-45deg); }
+            .arrow { font-size: 3rem; line-height: .4; }
         `,
     ];
 
@@ -257,13 +259,13 @@ export class LitTable extends TranslateMixin(LitElement) {
 
         return html`
             ${editUrl ?
-                html`<a href="${editUrl}" class="button primary button-action icon" title="${this.localize('table.edit')}"><i class="lcc lcc-pencil"></i></a>`
+                html`<a href="${editUrl}" class="button primary button-action icon" title="${this.localize('table.edit')}">&#9998;</a>`
                 : ''
             }
             ${deleteUrl ?
                 html`<lit-modal href="${deleteUrl}" type="confirm" lang="${this.lang}">
                     <span slot="button">
-                        <button class="button dark button-action icon" title="${this.localize('table.delete')}"><i class="lcc lcc-dismiss"></i></button>
+                        <button class="button dark button-action icon" title="${this.localize('table.delete')}">&#10006;</button>
                     </span>
                     <span slot="modal-header"><h4>${this.localize('table.confirmDelete')}</h4></span>
                     <span slot="modal-content">${this.localize('table.areYouSure')}</span>
@@ -305,7 +307,7 @@ export class LitTable extends TranslateMixin(LitElement) {
     renderInnerContent() {
         // Check if data is loaded
         if (!this.data.length) {
-            return html`<slot name="loading"><h1 class="text-center"><i class="lcc lcc-spinner animate-spin"></h1></slot>`;
+            return html`<slot name="loading"><h1 class="text-center"><div class="spinner"></div></h1></slot>`;
         }
 
         const keys = [ ...(this.hasActions ? [this.actionName] : []),  ...Array.from(this.tableHeaders.keys()) ];
@@ -335,7 +337,7 @@ export class LitTable extends TranslateMixin(LitElement) {
                                                         html`<a href="${this.addUrl}" class="button secondary button-action icon"
                                                             title="${this.localize('table.add')}"
                                                         >
-                                                            <i class="lcc lcc-plus"></i>
+                                                            <span class="rotate45">&#10006;</span>
                                                         </a>` : ''
                                                     }
                                                 </th>
@@ -359,22 +361,22 @@ export class LitTable extends TranslateMixin(LitElement) {
                         <button class="button icon-only primary flip-horizontal" title="${this.localize('table.first')}" @click="${this.onFirstPageClick}"
                             ?disabled="${this.page === 0}"
                         >
-                            <i class="lcc lcc-to-end"></i>
+                            <span class="arrow">&#187;</span>
                         </button>
                         <button class="button icon-only primary flip-horizontal" title="${this.localize('table.previous')}" @click="${this.onPreviousPageClick}"
                             ?disabled="${this.page === 0}"
                         >
-                            <i class="lcc lcc-play"></i>
+                            <span class="arrow">&#8250;</span>
                         </button>
                         <button class="button icon-only primary" title="${this.localize('table.next')}" @click="${this.onNextPageClick}"
                             ?disabled="${this.page === this.maxPage}"
                         >
-                            <i class="lcc lcc-play"></i>
+                            <span class="arrow">&#8250;</span>
                         </button>
                         <button class="button icon-only primary" title="${this.localize('table.last')}" @click="${this.onLastPageClick}"
                             ?disabled="${this.page === this.maxPage}"
                         >
-                            <i class="lcc lcc-to-end"></i>
+                            <span class="arrow">&#187;</span>
                         </button>
                     </div>
                     <div class="col col-2-md">
