@@ -133,16 +133,11 @@ export class LitTable extends TranslateMixin(LitElement) {
     }
 
     fetchSetting(name: string): string | null {
-        if (this.key) {
-            return sessionStorage.getItem(`${this.key}_${name}`);
-        }
-        return null;
+        return sessionStorage.getItem(`${this.key}_${name}`);
     }
 
     saveSetting(name: string, value: string | number) {
-        if (this.key) {
-            sessionStorage.setItem(`${this.key}_${name}`, value.toString());
-        }
+        sessionStorage.setItem(`${this.key}_${name}`, value.toString());
     }
 
     filterData() {
@@ -165,8 +160,7 @@ export class LitTable extends TranslateMixin(LitElement) {
             return;
         }
 
-        const data = await fetch(this.src).then((res) => res.json());
-        this.data = data.map((x: Row, index: number) => {
+        this.data = (await fetch(this.src).then((res) => res.json())).map((x: Row, index: number) => {
             x._index = index;
             return x;
         }) ?? [];
@@ -230,25 +224,23 @@ export class LitTable extends TranslateMixin(LitElement) {
     }
 
     onFirstPageClick() {
-        this.page = 0;
-        this.saveSetting(TableSetting.Page, this.page);
-        this.filterData();
+        this.setPage(0);
     }
 
     onLastPageClick() {
-        this.page = this.maxPage;
-        this.saveSetting(TableSetting.Page, this.page);
-        this.filterData();
+        this.setPage(this.maxPage);
     }
 
     onPreviousPageClick() {
-        this.page = Math.max(this.page - 1, 0);
-        this.saveSetting(TableSetting.Page, this.page);
-        this.filterData();
+        this.setPage(Math.max(this.page - 1, 0));
     }
 
     onNextPageClick() {
-        this.page = Math.min(this.page + 1, this.maxPage);
+        this.setPage(Math.min(this.page + 1, this.maxPage));
+    }
+
+    setPage(page: number) {
+        this.page = page;
         this.saveSetting(TableSetting.Page, this.page);
         this.filterData();
     }
