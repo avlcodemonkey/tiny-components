@@ -43,12 +43,35 @@ export class LitTable extends TranslateMixin(LitElement) {
         unsafeCSS(styles),
         css`
             .col-min-width { min-width:100px; }
-            .button-action { padding: .7rem; font-weight: bold; }
-            .button-action + .button-action { margin-left: .5rem; }
+            .button-action {
+                padding: .7rem;
+                font-size: 1.8rem;
+                font-weight: bold;
+                margin-right: .5rem;
+                min-width: 34px;
+                justify-content: center;
+            }
+            .button + .button { margin-left: inherit; }
             .flip-horizontal { transform: scaleX(-1); }
             .flip-horizontal:active { transform: scaleX(-.98); }
             .rotate45 { transform: rotate(-45deg); }
-            .arrow { font-size: 3rem; line-height: .4; }
+            .arrow { font-size: 2.5rem; line-height: .3; }
+            .spinner { display: inline-block; width: 80px; height: 80px; }
+            .spinner:after {
+                content: " ";
+                display: block;
+                width: 64px;
+                height: 64px;
+                margin: 8px;
+                border-radius: 50%;
+                border: 6px solid var(--color-primary);
+                border-color: var(--color-primary) transparent var(--color-primary) transparent;
+                animation: spinner 1.2s linear infinite;
+            }
+            @keyframes spinner {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
         `,
     ];
 
@@ -350,22 +373,22 @@ export class LitTable extends TranslateMixin(LitElement) {
                 </div>
                 <div class="row">
                     <div class="col col-10-md">
-                        <button class="button icon-only primary flip-horizontal" title="${this.localize('table.first')}" @click="${this.onFirstPageClick}"
+                        <button class="button button-action primary flip-horizontal" title="${this.localize('table.first')}" @click="${this.onFirstPageClick}"
                             ?disabled="${this.page === 0}"
                         >
                             <span class="arrow">&#187;</span>
                         </button>
-                        <button class="button icon-only primary flip-horizontal" title="${this.localize('table.previous')}" @click="${this.onPreviousPageClick}"
-                            ?disabled="${this.page === 0}"
+                        <button class="button button-action primary flip-horizontal" title="${this.localize('table.previous')}"
+                            @click="${this.onPreviousPageClick}" ?disabled="${this.page === 0}"
                         >
                             <span class="arrow">&#8250;</span>
                         </button>
-                        <button class="button icon-only primary" title="${this.localize('table.next')}" @click="${this.onNextPageClick}"
+                        <button class="button button-action primary" title="${this.localize('table.next')}" @click="${this.onNextPageClick}"
                             ?disabled="${this.page === this.maxPage}"
                         >
                             <span class="arrow">&#8250;</span>
                         </button>
-                        <button class="button icon-only primary" title="${this.localize('table.last')}" @click="${this.onLastPageClick}"
+                        <button class="button button-action primary" title="${this.localize('table.last')}" @click="${this.onLastPageClick}"
                             ?disabled="${this.page === this.maxPage}"
                         >
                             <span class="arrow">&#187;</span>

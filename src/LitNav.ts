@@ -12,7 +12,10 @@ export class LitNav extends LitElement {
 
     static styles = [
         unsafeCSS(styles),
-        css`.tab-content { padding: 2rem 0; }`,
+        css`
+            .tab-content { padding: 2rem 0; }
+            .cursor-pointer { cursor: pointer; }
+        `,
     ];
 
     async firstUpdated() {

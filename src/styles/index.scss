@@ -1,57 +1,24 @@
 @import url(../../node_modules/chota/src/chota.css);
 
-:root {
+:host, :root {
+    --bg-color: #ffffff;
+    --bg-secondary-color: #f3f3f6;
     --color-primary: #5783db;
+    --color-lightGrey: #d2d6dd;
     --color-grey: #3e9a80;
     --color-darkGrey: #80669d;
+    --color-error: #d43939;
     --color-success: #33b249;
+    --grid-maxWidth: 150rem;
     --grid-gutter: 1rem;
+    --font-size: 1.6rem;
+    --font-color: #333333;
+    --font-family-sans: -apple-system, BlinkMacSystemFont, Avenir, "Avenir Next", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    --font-family-mono: monaco, "Consolas", "Lucida Console", monospace;
 }
 
-.mb-1 {
-    margin-bottom: 1rem;
-}
-
-.cursor-pointer {
-    cursor: pointer;
-}
-
-// this should hide content in web component slots until the component is registered with the browser
+/* this should hide content in web component slots until the component is registered with the browser */
 :not(:defined) {
     display: none;
 }
 
-.spinner {
-    display: inline-block;
-    width: 80px;
-    height: 80px;
-}
-
-.spinner:after {
-    content: " ";
-    display: block;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
-    border-radius: 50%;
-    border: 6px solid var(--color-primary);
-    border-color: var(--color-primary) transparent var(--color-primary) transparent;
-    animation: spinner 1.2s linear infinite;
-}
-
-@keyframes spinner {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.button-dismiss {
-    border: none;
-    color: inherit;
-    background: inherit;
-    margin-top: -1rem;
-    font-weight: bold;
-}
