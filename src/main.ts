@@ -1,4 +1,3 @@
-import './LitMenu';
 import './LitTab';
 import './LitNav';
 import './LitAlert';
