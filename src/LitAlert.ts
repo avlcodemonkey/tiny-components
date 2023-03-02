@@ -2,7 +2,7 @@ import { html, LitElement, unsafeCSS, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { AlertType } from './enums/AlertType';
 import { TranslateMixin } from './mixins/TranslateMixin';
-import styles from '../src/styles/index.scss?inline';
+import styles from '../src/styles/index.css?inline';
 
 @customElement('lit-alert')
 export class LitAlert extends TranslateMixin(LitElement) {

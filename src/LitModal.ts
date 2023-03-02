@@ -2,7 +2,7 @@ import { html, LitElement, unsafeCSS, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { ModalType } from './enums/ModalType';
 import { TranslateMixin } from './mixins/TranslateMixin';
-import styles from '../src/styles/index.scss?inline';
+import styles from '../src/styles/index.css?inline';
 
 const focusableElements = 'button:not(.no-focus), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 

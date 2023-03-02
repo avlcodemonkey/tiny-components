@@ -3,7 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit-html/directives/repeat.js';
 import type { LitTableHeader } from './LitTableHeader';
 import { SortOrder } from './enums/SortOrder';
-import styles from '../src/styles/index.scss?inline';
+import styles from '../src/styles/index.css?inline';
 import { TableSetting } from './enums/TableSetting';
 import { TranslateMixin } from './mixins/TranslateMixin';
 

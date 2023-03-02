@@ -1,7 +1,7 @@
 import { html, css, LitElement, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { LitTab } from './LitTab';
-import styles from '../src/styles/index.scss?inline';
+import styles from '../src/styles/index.css?inline';
 
 @customElement('lit-nav')
 export class LitNav extends LitElement {

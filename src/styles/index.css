@@ -1,0 +1,24 @@
+@import url(../../node_modules/chota/src/chota.css);
+
+:host, :root {
+    --bg-color: #ffffff;
+    --bg-secondary-color: #f3f3f6;
+    --color-primary: #5783db;
+    --color-lightGrey: #d2d6dd;
+    --color-grey: #3e9a80;
+    --color-darkGrey: #80669d;
+    --color-error: #d43939;
+    --color-success: #33b249;
+    --grid-maxWidth: 150rem;
+    --grid-gutter: 1rem;
+    --font-size: 1.6rem;
+    --font-color: #333333;
+    --font-family-sans: -apple-system, BlinkMacSystemFont, Avenir, "Avenir Next", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    --font-family-mono: monaco, "Consolas", "Lucida Console", monospace;
+}
+
+/* this should hide content in web component slots until the component is registered with the browser */
+:not(:defined) {
+    display: none;
+}
+
