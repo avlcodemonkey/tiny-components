@@ -8,10 +8,10 @@ export default defineConfig({
     build: {
         lib: {
             entry: 'src/main.ts',
-            formats: ['es'],
+            name: 'tinyComponents',
+            formats: ['iife'],
         },
         rollupOptions: {
-            external: /^lit/,
             input: {
                 main: resolve(__dirname, 'index.html'),
             },
