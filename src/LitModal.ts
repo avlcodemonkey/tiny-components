@@ -114,7 +114,7 @@ export class LitModal extends TranslateMixin(LitElement) {
     }
 
     renderDismissButton() {
-        const title = this.localize('modal.dismiss');
+        const title = this.localize('common.dismiss');
         return html`<button class="button icon-only button-dismiss" @click="${this.onCancelClick}" title="${title}" aria-label="${title}">&#10006;</button>`;
     }
 

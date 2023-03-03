@@ -51,7 +51,7 @@ describe('dismissable success alert', async () => {
     });
 
     it('should have English title', async () => {
-        expect(getDismissButton()?.title).toBe(i18nJson.en.alert.dismiss);
+        expect(getDismissButton()?.title).toBe(i18nJson.en.common.dismiss);
     });
 });
 
@@ -106,7 +106,7 @@ describe('alert with defaults', async () => {
     });
 
     it('should have English title', async () => {
-        expect(getDismissButton()?.title).toBe(i18nJson.en.alert.dismiss);
+        expect(getDismissButton()?.title).toBe(i18nJson.en.common.dismiss);
     });
 });
 
@@ -128,6 +128,6 @@ describe('alert in spanish', async () => {
     });
 
     it('should have Spanish title', async () => {
-        expect(getDismissButton()?.title).toBe(i18nJson.es.alert.dismiss);
+        expect(getDismissButton()?.title).toBe(i18nJson.es.common.dismiss);
     });
 });

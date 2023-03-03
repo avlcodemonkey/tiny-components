@@ -105,7 +105,7 @@ describe('basic confirm modal', async () => {
         expect(cancelBtn).toBeTruthy();
         expect(cancelBtn?.textContent).toBe(i18nJson.en.modal.cancel);
         expect(dismissBtn).toBeTruthy();
-        expect(dismissBtn?.title).toBe(i18nJson.en.modal.dismiss);
+        expect(dismissBtn?.title).toBe(i18nJson.en.common.dismiss);
     });
 
     it('should close when dismiss btn clicked', async () => {
@@ -231,7 +231,7 @@ describe('spanish confirm modal', async () => {
         expect(cancelBtn).toBeTruthy();
         expect(cancelBtn?.textContent).toBe(i18nJson.es.modal.cancel);
         expect(dismissBtn).toBeTruthy();
-        expect(dismissBtn?.title).toBe(i18nJson.es.modal.dismiss);
+        expect(dismissBtn?.title).toBe(i18nJson.es.common.dismiss);
     });
 });
 

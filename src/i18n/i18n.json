@@ -1,10 +1,9 @@
 {
     "en": {
-        "alert": {
+        "common": {
             "dismiss": "Dismiss"
         },
         "modal": {
-            "dismiss": "Dismiss",
             "confirm": "Confirm",
             "cancel": "Cancel"
         },
@@ -26,11 +25,10 @@
         }
     },
     "es": {
-        "alert": {
+        "common": {
             "dismiss": "Despedir"
         },
         "modal": {
-            "dismiss": "Despedir",
             "confirm": "Confirmar",
             "cancel": "Cancelar"
         },

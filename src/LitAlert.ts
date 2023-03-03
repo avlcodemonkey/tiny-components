@@ -27,8 +27,8 @@ export class LitAlert extends TranslateMixin(LitElement) {
             <div class="row">
                 <span class="col-11"><slot></slot></span>
                 <span class="col-1 text-right">
-                    <button class="button icon-only button-dismiss" @click="${() => this.isDismissed = true}" title="${this.localize('alert.dismiss')}"
-                        aria-label="${this.localize('alert.dismiss')}"
+                    <button class="button icon-only button-dismiss" @click="${() => this.isDismissed = true}" title="${this.localize('common.dismiss')}"
+                        aria-label="${this.localize('common.dismiss')}"
                     >
                         &#10006;
                     </button>
