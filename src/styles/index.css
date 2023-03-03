@@ -1,4 +1,10 @@
-@import url(../../node_modules/chota/src/chota.css);
+/* import required pieces only from chota */
+@import url(../../node_modules/chota/src/_base.css);
+@import url(../../node_modules/chota/src/_grid.css);
+@import url(../../node_modules/chota/src/_form.css);
+@import url(../../node_modules/chota/src/_card.css);
+@import url(../../node_modules/chota/src/_tab.css);
+@import url(../../node_modules/chota/src/_util.css);
 
 :host, :root {
     --bg-color: #ffffff;
