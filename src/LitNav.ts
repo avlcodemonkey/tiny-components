@@ -14,7 +14,6 @@ export class LitNav extends LitElement {
         unsafeCSS(styles),
         css`
             .tab-content { padding: 2rem 0; }
-            .cursor-pointer { cursor: pointer; }
         `,
     ];
 

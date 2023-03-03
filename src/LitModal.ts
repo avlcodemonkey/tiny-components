@@ -33,8 +33,6 @@ export class LitModal extends TranslateMixin(LitElement) {
             }
             .modal-container { width: 40%; z-index: 16777271; }
             form { display: inline; }
-            .mb-1 { margin-bottom: 1rem; }
-            .button-dismiss { border: none; color: inherit; background: inherit; margin-top: -1rem; font-weight: bold; }
         `,
     ];
 
