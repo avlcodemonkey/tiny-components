@@ -1,6 +1,5 @@
 import { html, css, LitElement, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { repeat } from 'lit-html/directives/repeat.js';
 import type { LitTableHeader } from './LitTableHeader';
 import { SortOrder } from './enums/SortOrder';
 import styles from '../src/styles/index.css?inline';
@@ -296,7 +295,7 @@ export class LitTable extends TranslateMixin(LitElement) {
         }
 
         return html`
-            ${repeat(this.filteredData, (row) => row[this.rowKey as keyof typeof row], (row) => {
+            ${this.filteredData.map((row) => {
                 return html`
                     <tr>
                         ${keys.map((key) => {
