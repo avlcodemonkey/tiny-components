@@ -9,14 +9,13 @@ export default defineConfig({
         lib: {
             entry: 'src/main.ts',
             name: 'tinyComponents',
-            formats: ['iife'],
+            formats: ['es'],
         },
         rollupOptions: {
             input: {
                 main: resolve(__dirname, 'index.html'),
             },
         },
-        sourcemap: true,
     },
     resolve: {
         alias: {
