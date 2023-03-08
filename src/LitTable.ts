@@ -182,7 +182,7 @@ export class LitTable extends TranslateMixin(LitElement) {
             return;
         }
 
-        this.data = (await fetch(this.src).then((res) => res.json())).map((x: Row, index: number) => {
+        this.data = (await fetch(this.src, { headers: {'X-Requested-With': 'XMLHttpRequest'} }).then((res) => res.json())).map((x: Row, index: number) => {
             x._index = index;
             return x;
         }) ?? [];
