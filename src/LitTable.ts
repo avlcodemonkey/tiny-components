@@ -1,9 +1,9 @@
-import { html, css, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import type { LitTableHeader } from './LitTableHeader';
-import { SortOrder } from './enums/SortOrder';
 import styles from '../src/styles/index.css?inline';
+import { SortOrder } from './enums/SortOrder';
 import { TableSetting } from './enums/TableSetting';
+import type { LitTableHeader } from './LitTableHeader';
 import { TranslateMixin } from './mixins/TranslateMixin';
 
 interface Row {
