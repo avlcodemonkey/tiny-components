@@ -166,6 +166,16 @@
                         <lit-table-header property="name">Name</lit-table-header>
                         <lit-table-header property="email">Email</lit-table-header>
                         <lit-table-header property="body">Body</lit-table-header>
+                        <div slot="rowActions">
+                            <a class="button primary button-action icon" href="https://localhost/edit?id=${id}&postId=${postId}" title="Edit Me">✎</a>
+                            <lit-modal type="confirm" href="https://localhost/delete?id=${id}&postId=${postId}" lang="en">
+                                <span slot="button">
+                                    <button class="button dark button-action icon" title="Delete Me">✖</button>
+                                </span>
+                                <span slot="modal-header"><h4>Confirm</h4></span>
+                                <span slot="modal-content">Are you sure you want to delete?</span>
+                            </lit-modal>
+                        </div>
                     </lit-table>
                     <br />
 

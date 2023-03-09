@@ -1,4 +1,5 @@
 import { css, html, LitElement, unsafeCSS } from 'lit';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { customElement, property, state } from 'lit/decorators.js';
 import styles from '../src/styles/index.css?inline';
 import { SortOrder } from './enums/SortOrder';
@@ -35,8 +36,12 @@ export class LitTable extends TranslateMixin(LitElement) {
     @state() hasActions?: boolean = false;
     @state() tableHeaders: Map<string, LitTableHeader> = new Map();
 
+    @state() headerActionSlot: Element | null | undefined;
+    @state() rowActionSlot: Element | null | undefined;
+
     private actionName = 'actions';
     private debounceTimer: ReturnType<typeof setTimeout> | undefined;
+    private dataRegex = /\${(\w+)}/gm;
 
     static styles = [
         unsafeCSS(styles),
@@ -142,16 +147,18 @@ export class LitTable extends TranslateMixin(LitElement) {
         this.filterData();
     }
 
-    replaceInUrl(url: string, row: object) {
-        if (!url) {
-            return url;
+    replaceRowData(content: string, row: object) {
+        if (!content) {
+            return content;
         }
 
-        let newUrl = url;
-        Object.keys(row).forEach((x) => {
-            newUrl = newUrl.replace(`$\{${x}}`, encodeURIComponent(row[x as keyof typeof row]));
-        });
-        return newUrl;
+        const keys = Object.keys(row);
+        let newContent = content;
+        Array.from(content.matchAll(this.dataRegex)).filter((x) => keys.includes(x[1])).forEach((x) => {
+            // should we encodeURIComponent? might need more advanced logic to determine if the match is inside a link
+            newContent = newContent.replace(x[0], row[x[1] as keyof typeof row]);
+        })
+        return newContent;
     }
 
     fetchSetting(name: string): string | null {
@@ -182,10 +189,12 @@ export class LitTable extends TranslateMixin(LitElement) {
             return;
         }
 
-        this.data = (await fetch(this.src, { headers: {'X-Requested-With': 'XMLHttpRequest'} }).then((res) => res.json())).map((x: Row, index: number) => {
-            x._index = index;
-            return x;
-        }) ?? [];
+        this.data = (await fetch(this.src, { headers: {'X-Requested-With': 'XMLHttpRequest'} })
+            .then((res) => res.json()))
+            .map((x: Row, index: number) => {
+                x._index = index;
+                return x;
+            }) ?? [];
 
         this.filterData();
     }
@@ -198,6 +207,9 @@ export class LitTable extends TranslateMixin(LitElement) {
         this.sortColumns = JSON.parse(this.fetchSetting(TableSetting.Sort) ?? '[]');
 
         if (this.shadowRoot) {
+            this.headerActionSlot = this.querySelector('*[slot=headerActions]');
+            this.rowActionSlot = this.querySelector('*[slot=rowActions]');
+
             const slot = this.shadowRoot.querySelector('slot');
             if (slot) {
                 const assignedNodes = slot.assignedNodes();
@@ -210,10 +222,11 @@ export class LitTable extends TranslateMixin(LitElement) {
                         header.sortOrder = x.sortOrder;
                     }
                 });
+
             }
         }
 
-        if (this.addUrl || this.editUrl || this.deleteUrl) {
+        if (this.addUrl || this.editUrl || this.deleteUrl || this.headerActionSlot || this.rowActionSlot) {
             this.hasActions = true;
         }
 
@@ -267,9 +280,26 @@ export class LitTable extends TranslateMixin(LitElement) {
         this.filterData();
     }
 
+    renderHeaderActionsContent() {
+        if (this.headerActionSlot) {
+            return html`<slot name="headerActions"></slot>`;
+        }
+        return html`
+            ${this.addUrl ?
+                html`<a href="${this.addUrl}" class="button secondary button-action icon" title="${this.localize('table.add')}">
+                    <span class="rotate45">&#10006;</span>
+                </a>` : ''
+            }
+        `;
+    }
+
     renderActions(row: object) {
-        const editUrl = this.replaceInUrl(this.editUrl, row);
-        const deleteUrl = this.replaceInUrl(this.deleteUrl, row);
+        if (this.rowActionSlot) {
+            return html`${unsafeHTML(this.replaceRowData(this.rowActionSlot.innerHTML, row))}`;
+        }
+
+        const editUrl = this.replaceRowData(this.editUrl, row);
+        const deleteUrl = this.replaceRowData(this.deleteUrl, row);
 
         return html`
             ${editUrl ?
@@ -345,17 +375,7 @@ export class LitTable extends TranslateMixin(LitElement) {
                                 <tr>
                                     ${keys.map((key) => {
                                         if (key === this.actionName) {
-                                            return html`
-                                                <th class="col-min-width">
-                                                    ${this.addUrl ?
-                                                        html`<a href="${this.addUrl}" class="button secondary button-action icon"
-                                                            title="${this.localize('table.add')}"
-                                                        >
-                                                            <span class="rotate45">&#10006;</span>
-                                                        </a>` : ''
-                                                    }
-                                                </th>
-                                            `;
+                                            return html `<th class="col-min-width">${this.renderHeaderActionsContent()}</th>`;
                                         }
                                         const header = this.tableHeaders.get(key);
                                         return html`
