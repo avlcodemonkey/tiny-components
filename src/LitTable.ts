@@ -233,6 +233,10 @@ export class LitTable extends TranslateMixin(LitElement) {
         await this.fetchData();
     }
 
+    async updated() {
+        this.dispatchEvent(new CustomEvent('lit-table-updated', { bubbles: true, composed: true, detail: this.key }));
+    }
+
     onSearchQueryInput(searchQuery: string) {
         if (this.debounceTimer) {
             clearTimeout(this.debounceTimer);
